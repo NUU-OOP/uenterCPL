@@ -22,6 +22,17 @@ public class Main extends Application {
         HBox hBox = new HBox();
         hBox.setPadding(new Insets(10, 10, 10, 10));
         hBox.setSpacing(5);
+        Fazliddin fazliddin = new Fazliddin();
+        fazliddin.start(primaryStage);
+
+//        hBox.getChildren().addAll(rectangle(10));
+//        borderPane.setBottom(hBox);
+//        borderPane.setLeft(new Sirojiddin());
+//        Scene scene = new Scene(borderPane, 600,400);
+//        primaryStage.setScene(scene);
+//        primaryStage.show();
+
+
         hBox.getChildren().addAll(rectangle(10)); // Add 10 rectangles at the bottom
         borderPane.setBottom(hBox);
 
@@ -59,7 +70,7 @@ public class Main extends Application {
     // Method to create a list of rectangles
     public List<Rectangle> rectangle(int number) {
         List<Rectangle> list = new ArrayList<>();
-        for (int i = 0; i < number; i++) {
+        for (int i = 0; i < number; i ++) {
             Rectangle rectangle = new Rectangle();
             rectangle.setArcHeight(10);
             rectangle.setArcWidth(10);
@@ -70,6 +81,7 @@ public class Main extends Application {
             rectangle.setStroke(Color.BLACK);
             list.add(rectangle);
         }
+
         return list;
     }
 
