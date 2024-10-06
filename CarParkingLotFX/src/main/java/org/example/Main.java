@@ -22,6 +22,7 @@ public class Main extends Application {
 
         hBox.getChildren().addAll(rectangle(10));
         borderPane.setBottom(hBox);
+        borderPane.setLeft(new Sirojiddin());
         Scene scene = new Scene(borderPane, 600,400);
         primaryStage.setScene(scene);
         primaryStage.show();
