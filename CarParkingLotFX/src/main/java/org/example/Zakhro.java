@@ -3,6 +3,7 @@ package org.example;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -10,7 +11,11 @@ import javafx.scene.layout.*;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+import java.util.Scanner;
+
 public class Zakhro  extends Pane {
+    // Declare fields
+    private TextField scanTextField;
 
     Zakhro(){
 
@@ -63,7 +68,7 @@ public class Zakhro  extends Pane {
         HBox scanBox = new HBox(10);
         //scanBox.setAlignment(Pos.CENTER);
         Button scanButton = new Button("scan");
-        TextField scanTextField = new TextField();
+        scanTextField = new TextField();
         scanBox.getChildren().addAll(scanButton, scanTextField);
 
         // Grid for labels and values
@@ -97,6 +102,10 @@ public class Zakhro  extends Pane {
         Button cancelButton = new Button("Cancel");
         buttonBox.getChildren().addAll(payButton, cancelButton);
 
+        //  Scan button action
+        scanButton.setOnAction(e -> scan());
+
+
         //  Cancel button action
         cancelButton.setOnAction(e -> resetForm());
 
@@ -115,6 +124,29 @@ public class Zakhro  extends Pane {
         primaryStage.setResizable(false);
         primaryStage.show();
     }
+    private void scan() {
+        if (scanTextField.getText().isEmpty()){
+           showAlert("Missing Information", "Please, enter Ticket Number.");
+        }
+        else {
+            if (scanTextField.getText().startsWith("T")){
+                showAlert("Information", "Found");
+            }
+            else {
+                showAlert("Wrong Information", "Please, enter Ticket Number correctly.");
+
+            }
+        }
+
+    }
+    private void showAlert(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+
 
     private void resetForm() {
 
