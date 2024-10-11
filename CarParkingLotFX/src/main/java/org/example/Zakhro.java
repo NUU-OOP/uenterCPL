@@ -8,17 +8,14 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.*;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-import java.util.Scanner;
 
 public class Zakhro  extends Pane {
     // Declare fields
     private TextField scanTextField;
 
     Zakhro(){
-
         CreateAttendentMenu();
     }
 
