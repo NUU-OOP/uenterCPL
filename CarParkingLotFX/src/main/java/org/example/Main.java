@@ -23,7 +23,7 @@ public class Main extends Application {
         hBox.setPadding(new Insets(10, 10, 10, 10));
         hBox.setSpacing(5);
         Fazliddin fazliddin = new Fazliddin();
-        fazliddin.start(primaryStage);
+        borderPane.setCenter(fazliddin);
 
 //        hBox.getChildren().addAll(rectangle(10));
 //        borderPane.setBottom(hBox);
@@ -32,12 +32,13 @@ public class Main extends Application {
 //        primaryStage.setScene(scene);
 //        primaryStage.show();
 
-
+Hikmatullo hikmatullo = new Hikmatullo();
         hBox.getChildren().addAll(rectangle(10)); // Add 10 rectangles at the bottom
         borderPane.setBottom(hBox);
 
         // Left section with custom component (Sirojiddin)
         borderPane.setLeft(new Sirojiddin());
+        borderPane.setTop(hikmatullo);
 
         // Set up the scene and primary stage
         Scene scene = new Scene(borderPane, 600, 400);
