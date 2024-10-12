@@ -14,47 +14,21 @@ import javafx.stage.Stage;
 public class Zakhro  extends Pane {
     // Declare fields
     private TextField scanTextField;
-
+    private Button scanButton;
+    private Label entranceTimeLabel;
+    private Label entranceTimeValue;
+    private Label exitTimeLabel;
+    private Label exitTimeValue;
+    private Label amountLabel;
+    private Label amountValue;
+    private Label extraFeeLabel;
+    private Label extraFeeValue;
+    private Button payButton;
     Zakhro(){
         CreateAttendentMenu();
     }
 
     protected void CreateAttendentMenu(){
-        // version1:
-////        getChildren().clear();
-////
-////        Text scan = new Text("Scan");
-////        TextField textField = new TextField();
-////
-////        Text enter = new Text("Entrance time:");
-////        Text exit = new Text("Exit time:");
-////        Text amount = new Text("Amount:");
-////        Text extraFee = new Text("Extra fee:");
-////        Button pay =new Button("Pay");
-////        Button cancel =new Button("Cancel");
-////        HBox hbox_button = new HBox();
-////        hbox_button.getChildren().addAll(pay, cancel);
-////        hbox_button.setPadding(new Insets(0, 20, 10, 80));
-////        hbox_button.setSpacing(10);
-////        VBox vbox = new VBox();
-////        HBox hbox = new HBox();
-////        hbox.getChildren().addAll(scan, textField);
-////        hbox.setSpacing(80);
-////        vbox.getChildren().addAll(hbox, enter, exit, amount, extraFee);
-////        vbox.setSpacing(15);
-////        vbox.setPadding(new Insets(20,20,20,20));
-////        BorderPane borderPane = new BorderPane();
-////        borderPane.setLeft(vbox);
-////        borderPane.setBottom(hbox_button);
-//
-//
-//        getChildren().add(borderPane);
-//        Scene scene =new Scene(vbox);
-//        Stage stage =new Stage();
-//        stage.setScene(scene);
-//        stage.show();
-// version2 (with Labels):
-
         // Create the main layout
         VBox mainLayout = new VBox(20);
         mainLayout.setPadding(new Insets(20));
@@ -64,7 +38,7 @@ public class Zakhro  extends Pane {
         // Scan button and text field
         HBox scanBox = new HBox(10);
         //scanBox.setAlignment(Pos.CENTER);
-        Button scanButton = new Button("scan");
+        scanButton = new Button("scan");
         scanTextField = new TextField();
         scanBox.getChildren().addAll(scanButton, scanTextField);
 
@@ -74,14 +48,14 @@ public class Zakhro  extends Pane {
         grid.setHgap(10);
 
 
-        Label entranceTimeLabel = new Label("Entrance time:");
-        Label entranceTimeValue = new Label();
-        Label exitTimeLabel = new Label("Exit time:");
-        Label exitTimeValue = new Label();
-        Label amountLabel = new Label("Amount:");
-        Label amountValue = new Label();
-        Label extraFeeLabel = new Label("Extra Fee:");
-        Label extraFeeValue = new Label();
+        entranceTimeLabel = new Label("Entrance time:");
+        entranceTimeValue = new Label();
+        exitTimeLabel = new Label("Exit time:");
+        exitTimeValue = new Label();
+        amountLabel = new Label("Amount:");
+        amountValue = new Label();
+        extraFeeLabel = new Label("Extra Fee:");
+        extraFeeValue = new Label();
 
         grid.add(entranceTimeLabel, 0, 0);
         grid.add(entranceTimeValue, 1, 0);
@@ -95,7 +69,8 @@ public class Zakhro  extends Pane {
         // Pay and Cancel buttons
         HBox buttonBox = new HBox(20);
         buttonBox.setAlignment(Pos.BOTTOM_RIGHT);
-        Button payButton = new Button("Pay");
+        payButton = new Button("Pay");
+        payButton.setDisable(true);
         Button cancelButton = new Button("Cancel");
         buttonBox.getChildren().addAll(payButton, cancelButton);
 
@@ -128,6 +103,7 @@ public class Zakhro  extends Pane {
         else {
             if (scanTextField.getText().startsWith("T")){
                 showAlert("Information", "Found");
+                payButton.setDisable(false);
             }
             else {
                 showAlert("Wrong Information", "Please, enter Ticket Number correctly.");
