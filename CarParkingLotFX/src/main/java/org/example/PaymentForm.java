@@ -2,37 +2,109 @@ package org.example;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
 public class PaymentForm extends Pane {
+   Boolean is_paid = false;
    PaymentForm(){
        creatForm();
    }
    private void creatForm(){
+       getChildren().clear();
        // Create labels and text fields
-       Label cashLabel = new Label("Cash:");
+       ToggleGroup group = new ToggleGroup();
+       RadioButton cashLabel = new RadioButton("Cash:");
        cashLabel.setPadding(new Insets(5));
+       cashLabel.setToggleGroup(group);
+
+       RadioButton accountLabel = new RadioButton("Account:");
+       accountLabel.setToggleGroup(group);
+       RadioButton cardLabel = new RadioButton("Card:");
+       cardLabel.setPadding(new Insets(5));
+       cardLabel.setToggleGroup(group);
+
+       Label accountNumberLabel = new Label("Account Number:");
+       TextField accountNumber = new TextField();
+
+
+
        Label cashAmountLabel = new Label("Amount");
        TextField cashAmount = new TextField();
-       Label cardLabel = new Label("Card:");
-       cardLabel.setPadding(new Insets(5));
+
+
        Label cardNumberLabel = new Label("Card Number:");
        TextField cardNumber = new TextField();
        Label cardAmountLabel = new Label("Amount:");
        TextField cardAmount = new TextField();
-       Label accountLabel = new Label("Account:");
-       accountLabel.setPadding(new Insets(5));
-       Label accountNumberLabel = new Label("Account Number:");
-       TextField accountNumber = new TextField();
-       // Create buttons
-       Button payButton = new Button("Pay");
-       payButton.setAlignment(Pos.BOTTOM_CENTER);
 
+       Button payButton = new Button("Pay");
+
+       cashLabel.setOnAction(event -> {
+           cashLabel.setSelected(true);
+           cardLabel.setSelected(false);
+           accountLabel.setSelected(false);
+
+           cashAmount.setEditable(true);
+
+           accountNumber.clear();
+           cardNumber.clear();
+           cardAmount.clear();
+
+           accountNumber.setEditable(false);
+           cardNumber.setEditable(false);
+           cardAmount.setEditable(false);
+       });
+       cardLabel.setOnAction(event -> {
+           cardLabel.setSelected(true);
+           accountLabel.setSelected(false);
+           cashLabel.setSelected(false);
+
+           accountNumber.clear();
+           cashAmount.clear();
+
+           cardAmount.setEditable(true);
+           cardNumber.setEditable(true);
+           cashAmount.setEditable(false);
+           accountNumber.setEditable(false);
+       });
+
+       accountLabel.setOnAction(event ->{
+           accountLabel.setSelected(true);
+           cashLabel.setSelected(false);
+           cardLabel.setSelected(false);
+
+           cashAmount.clear();
+           cardNumber.clear();
+           cardAmount.clear();
+
+           accountNumber.setEditable(true);
+           cashAmount.setEditable(false);
+           cardNumber.setEditable(false);
+           cardAmount.setEditable(false);
+
+       } );
+       accountLabel.setPadding(new Insets(5));
+       // Create buttons
+
+       payButton.setAlignment(Pos.BOTTOM_CENTER);
+       payButton.setPadding(new Insets(10,10,10,10));
+       payButton.setPrefWidth(70);
+       payButton.setOnAction(event -> {
+           if (cashAmount.getText().isEmpty() && (cardNumber.getText().isEmpty() || cardAmount.getText().isEmpty()) && accountNumber.getText().isEmpty()) {
+               System.out.println("You should pay");
+               is_paid = false;
+               System.out.println("is_paid = "+is_paid);
+           }
+           else {
+               is_paid = true;
+               System.out.println("is_paid = "+is_paid);
+           }
+       });
 
        // Layout
        GridPane grid = new GridPane();
@@ -63,5 +135,13 @@ public class PaymentForm extends Pane {
 
        grid.add(payButton, 2, 5);
        this.getChildren().add(grid);
+
+//
+//        Scene scene =new Scene(grid, 600,390);
+//        Stage primarystage = new Stage();
+//        primarystage.setScene(scene);
+//        primarystage.show();
+
+
    }
 }

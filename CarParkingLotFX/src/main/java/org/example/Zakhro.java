@@ -1,5 +1,7 @@
 package org.example;
 
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -29,6 +31,7 @@ public class Zakhro  extends Pane {
     }
 
     protected void CreateAttendentMenu(){
+        getChildren().clear();
         // Create the main layout
         VBox mainLayout = new VBox(20);
         mainLayout.setPadding(new Insets(20));
@@ -82,7 +85,7 @@ public class Zakhro  extends Pane {
         cancelButton.setOnAction(e -> resetForm());
 
         //  Pay button action
-        payButton.setOnAction(e -> PaymentForm());
+        payButton.setOnAction((EventHandler<ActionEvent>) new PaymentForm());
 
 
         // Add all elements to the main layout
