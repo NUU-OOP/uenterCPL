@@ -8,8 +8,8 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-public class Vais extends Pane {
-    Vais(){
+public class EntranceForm extends Pane {
+    EntranceForm(){
         createEntranceForm();
     }
 
