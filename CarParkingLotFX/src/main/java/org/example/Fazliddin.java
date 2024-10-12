@@ -11,7 +11,9 @@ import javafx.stage.Stage;
 // Payment method
 public class Fazliddin extends Pane {
 
-    public void start(Stage primaryStage) {
+    void createPaymentForm() {
+        getChildren().clear();
+
         // Create buttons
         Button cashButton = new Button("Cash");
         Button cardButton = new Button("Card");
@@ -34,13 +36,8 @@ public class Fazliddin extends Pane {
         VBox layout = new VBox(10); // 10 is the spacing between buttons
         layout.getChildren().addAll(cashButton, cardButton, cashLabel, noteButton);
 
-        // Scene
-        Scene scene = new Scene(layout, 400, 400);
+        getChildren().add(layout);
 
-        // Stage
-        primaryStage.setTitle("Payment System");
-        primaryStage.setScene(scene);
-        primaryStage.show();
     }
 }
 

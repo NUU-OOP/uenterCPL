@@ -10,8 +10,6 @@ public class Spot extends Pane {
     protected void setWidth(double width){
         super.setWidth(width);
     }
-
-
     private void paintSpot(){
         Rectangle rectangle = new Rectangle();
         rectangle.setStroke(Color.GREEN);
