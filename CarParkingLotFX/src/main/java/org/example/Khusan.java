@@ -39,13 +39,8 @@ public class Khusan extends Pane {
         gridPane.add(passwordLabel, 0, 1);
         gridPane.add(passwordField, 1, 1);
         gridPane.add(submitButton, 1, 2);
+        this.getChildren().add(gridPane);
 
-        // Create the scene and set the stage
-        Scene scene = new Scene(gridPane, 250, 120);
-        Stage primaryStage = new Stage();
-        primaryStage.setTitle("Login Form");
-        primaryStage.setScene(scene);
-        primaryStage.show();
     }
 
     // Check if fields are empty and show alert

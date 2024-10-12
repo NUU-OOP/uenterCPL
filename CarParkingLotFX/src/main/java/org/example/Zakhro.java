@@ -87,14 +87,15 @@ public class Zakhro  extends Pane {
 
         // Add all elements to the main layout
         mainLayout.getChildren().addAll(scanBox, grid, buttonBox);
+        this.getChildren().add(mainLayout);
 
-        // Set the scene and show the stage
-        Scene scene = new Scene(mainLayout, 260, 230);
-        Stage primaryStage = new Stage();
-        primaryStage.setTitle("Attendant Menu");
-        primaryStage.setScene(scene);
-        primaryStage.setResizable(false);
-        primaryStage.show();
+//        // Set the scene and show the stage
+//        Scene scene = new Scene(mainLayout, 260, 230);
+//        Stage primaryStage = new Stage();
+//        primaryStage.setTitle("Attendant Menu");
+//        primaryStage.setScene(scene);
+//        primaryStage.setResizable(false);
+//        primaryStage.show();
     }
     private void scan() {
         if (scanTextField.getText().isEmpty()){

@@ -4,17 +4,21 @@ import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-public class Vais {
+public class Vais extends Pane {
+    Vais(){
+        createEntranceForm();
+    }
 
     // Declare fields for ticket information
     private TextField carNumberInput;
     private ComboBox<String> carTypeComboBox;
     private TextField ticketNumberInput;
 
-    public GridPane createEntranceForm() {
+    public void createEntranceForm() {
         // Create labels and inputs
         Label carNumberLabel = new Label("Car Number:");
         carNumberInput = new TextField();
@@ -71,7 +75,7 @@ public class Vais {
         // Reset button action
         resetButton.setOnAction(e -> resetForm());
 
-        return gridPane;
+       this.getChildren().add(gridPane);
     }
 
     // Method to show the ticket details in a new window
