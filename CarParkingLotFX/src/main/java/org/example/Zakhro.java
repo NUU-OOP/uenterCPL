@@ -82,7 +82,7 @@ public class Zakhro  extends Pane {
         cancelButton.setOnAction(e -> resetForm());
 
         //  Pay button action
-        payButton.setOnAction(e -> PaymentForm());
+
 
 
         // Add all elements to the main layout
