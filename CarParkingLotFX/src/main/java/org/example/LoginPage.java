@@ -1,17 +1,15 @@
 package org.example;
 
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
-import javafx.stage.Stage;
 import javafx.geometry.Insets;
 
-public class Khusan extends Pane {
-    protected TextField loginField;
-    protected PasswordField passwordField;
+public class LoginPage extends Pane {
+    private TextField loginField;
+    private PasswordField passwordField;
 
-    Khusan(){
+    LoginPage(){
         LoginForm();
     }
 
@@ -19,6 +17,11 @@ public class Khusan extends Pane {
         // Create the labels
         Label loginLabel = new Label("Login:");
         Label passwordLabel = new Label("Password:");
+        ComboBox<String> role = new ComboBox<>();
+        role.getItems().add("Admin");
+        role.getItems().add("Attendant");
+        role.setPromptText("Select role for login");
+
 
         // Initialize the instance variables
         loginField = new TextField();
@@ -26,7 +29,7 @@ public class Khusan extends Pane {
 
         // Create the submit button
         Button submitButton = new Button("Submit");
-        submitButton.setOnAction(e -> submit());
+        submitButton.setOnAction(e -> submit("admin"));
 
         // Create a grid pane and add the components
         GridPane gridPane = new GridPane();
@@ -38,19 +41,27 @@ public class Khusan extends Pane {
         gridPane.add(loginField, 1, 0);
         gridPane.add(passwordLabel, 0, 1);
         gridPane.add(passwordField, 1, 1);
-        gridPane.add(submitButton, 1, 2);
+        gridPane.add(role, 1, 2);
+        gridPane.add(submitButton, 2, 2);
         this.getChildren().add(gridPane);
 
     }
 
     // Check if fields are empty and show alert
-    private void submit() {
-        if (loginField.getText().isEmpty() || passwordField.getText().isEmpty()) {
-            showAlert("Missing Information", "Please enter login and password.");
-        } else if (loginField.getText().equals("admin") && passwordField.getText().equals("adminpass")) {
-            showAlert("Login Successful", "Welcome Admin!");
-        } else {
-            showAlert("Login Failed", "Invalid username or password.");
+    private void submit(String role) {
+        if (role.equals("Admin")) {
+            if (loginField.getText().isEmpty() || passwordField.getText().isEmpty()) {
+                showAlert("Missing Information", "Please enter login and password.");
+            } else if (loginField.getText().equals("admin") && passwordField.getText().equals("adminpass")) {
+                showAlert("Login Successful", "Welcome Admin!");
+            } else {
+                showAlert("Login Failed", "Invalid username or password.");
+            }
+        }
+        if (role.equals("Attendant")){
+            //TODO Write code to connect database then check if user exist or not
+
+
         }
     }
 

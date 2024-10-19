@@ -22,22 +22,11 @@ public class Main extends Application {
     public static final String DB_URL = "jdbc:sqlite:university.db";
     @Override
     public void start(Stage primaryStage) throws Exception {
+        LoginPage loginPage = new LoginPage();
+        Scene scene = new Scene(loginPage);
+        primaryStage.setScene(scene);
+        primaryStage.show();
 
-        try (Connection conn = DriverManager.getConnection(DB_URL)) {
-            if (conn != null) {
-                System.out.println("Connected to the database.");
-                DBConnection.createTable(conn, "CREATE TABLE IF NOT EXISTS car (id INTEGER PRIMARY KEY, floor INTEGER NOT NULL," +
-                        "" +
-                        "                + \"id INTEGER PRIMARY KEY, \"\n" +
-                        "                + \"name TEXT NOT NULL, \"\n" +
-                        "                + \"age INTEGER, phone INTEGER);\";");
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        ParkingSpotApp parkingSpotApp = new ParkingSpotApp();
-        parkingSpotApp.start(primaryStage);
 
     }
 
