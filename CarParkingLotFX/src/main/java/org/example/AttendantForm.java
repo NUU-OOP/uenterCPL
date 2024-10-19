@@ -90,7 +90,7 @@ public class AttendantForm extends Application {
                                 "VALUES ('%s', %d, %d, '%s', '%s', %d);",
                          name, phone, age, login, password, gate
                 );
-                DBConnection.insertData(sql);
+
                 System.out.println(sql);
 
             } catch (NumberFormatException ex) {

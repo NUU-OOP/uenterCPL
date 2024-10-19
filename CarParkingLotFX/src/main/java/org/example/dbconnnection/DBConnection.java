@@ -5,60 +5,61 @@ import java.sql.*;
 public class DBConnection {
     public static final String DB_URL = "jdbc:sqlite:hello.db";
 
+    private Connection conn;
+
+    // Constructor initializes the database connection
     public DBConnection() throws SQLException {
+        this.conn = DriverManager.getConnection(DB_URL);
+        System.out.println("Connected to the database.");
     }
 
-    public static Connection connectDB(){
-        try (Connection conn = DriverManager.getConnection(DB_URL)) {
-            if (conn != null) {
-                System.out.println("Connected to the database.");
-                return conn;
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return null;
+    // Reusable connection method (if needed elsewhere)
+    public Connection getConnection() {
+        return this.conn;
     }
-    public static void createTable(Connection conn, String sqlCommand) throws SQLException {
+
+    // Method to execute any SQL command that doesn't return results (CREATE, INSERT, UPDATE, DELETE)
+    public void executeCommand(String sqlCommand) throws SQLException {
         try (Statement stmt = conn.createStatement()) {
             stmt.execute(sqlCommand);
-            System.out.println("Table created.");
-        } }
-    public static void insertData(String sqlCommand) throws SQLException {
-
-        try (Connection conn = DriverManager.getConnection(DB_URL)) {
-            if (conn != null) {
-                System.out.println("Connected to the database.");
-                try (PreparedStatement pstmt = conn.prepareStatement(sqlCommand)) {
-                    pstmt.executeUpdate();
-                }
-            }
+            System.out.println("SQL command executed successfully.");
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.err.println("Error executing SQL command: " + e.getMessage());
+            throw e;
         }
     }
-    public static void readData(Connection conn, String sqlCommand) throws SQLException {
 
+    // Method to execute and print results of SELECT queries
+    public void executeQuery(String sqlCommand) throws SQLException {
         try (PreparedStatement pstmt = conn.prepareStatement(sqlCommand);
              ResultSet rs = pstmt.executeQuery()) {
+
             ResultSetMetaData metaData = rs.getMetaData();
-            int col = metaData.getColumnCount();
+            int columnCount = metaData.getColumnCount();
+
             while (rs.next()) {
-                for (int i = 1; i <= col; i++) {
-                    System.out.print(rs.getString(i)+" ");
+                for (int i = 1; i <= columnCount; i++) {
+                    System.out.print(rs.getString(i) + " ");
                 }
+                System.out.println();
             }
+        } catch (SQLException e) {
+            System.err.println("Error executing query: " + e.getMessage());
+            throw e;
         }
     }
-    public static void updateData(Connection conn, String sqlCommand) throws SQLException {
 
-        try (PreparedStatement pstmt = conn.prepareStatement(sqlCommand)) {
-            pstmt.executeUpdate();
-            System.out.println("Updated!");
-        } }
-    public static void deleteData(Connection conn, String sqlCommand) throws SQLException {
-        try (PreparedStatement pstmt = conn.prepareStatement(sqlCommand)) {
-            pstmt.executeUpdate();
-            System.out.println("Data deleted successfully !");
-        } }
+    // Close the database connection when done
+    public void closeConnection() {
+        try {
+            if (conn != null && !conn.isClosed()) {
+                conn.close();
+                System.out.println("Connection closed.");
+            }
+        } catch (SQLException e) {
+            System.err.println("Error closing connection: " + e.getMessage());
+        }
+    }
+
+
 }
