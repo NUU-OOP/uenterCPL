@@ -4,6 +4,11 @@ import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.geometry.Insets;
+import org.example.dbconnnection.DBConnection;
+
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
 
 public class LoginPage extends Pane {
     private TextField loginField;
@@ -29,7 +34,13 @@ public class LoginPage extends Pane {
 
         // Create the submit button
         Button submitButton = new Button("Submit");
-        submitButton.setOnAction(e -> submit("admin"));
+        submitButton.setOnAction(e -> {
+            try {
+                submit("Attendant");
+            } catch (SQLException ex) {
+                throw new RuntimeException(ex);
+            }
+        });
 
         // Create a grid pane and add the components
         GridPane gridPane = new GridPane();
@@ -48,7 +59,7 @@ public class LoginPage extends Pane {
     }
 
     // Check if fields are empty and show alert
-    private void submit(String role) {
+    private void submit(String role) throws SQLException {
         if (role.equals("Admin")) {
             if (loginField.getText().isEmpty() || passwordField.getText().isEmpty()) {
                 showAlert("Missing Information", "Please enter login and password.");
@@ -60,6 +71,22 @@ public class LoginPage extends Pane {
         }
         if (role.equals("Attendant")){
             //TODO Write code to connect database then check if user exist or not
+            DBConnection dbConnection = new DBConnection();
+          ResultSet resultSet  = dbConnection.executeQuery("SELECT * FROM Attendant","1236","123123");
+//          ResultSetMetaData metaData = resultSet.getMetaData();
+//          int columnCount = metaData.getColumnCount();
+//            System.out.println(columnCount);
+
+          while (resultSet.next()){
+              System.out.println("Checking");
+              System.out.println(resultSet.getString(1));
+//              if (resultSet.getString(1).equals("1236") && resultSet.getString(2).equals("123123")){
+//                  System.out.println("FOUND");
+//              }
+          }
+
+
+
 
 
         }

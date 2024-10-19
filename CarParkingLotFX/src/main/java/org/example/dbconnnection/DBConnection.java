@@ -30,7 +30,7 @@ public class DBConnection {
     }
 
     // Method to execute and print results of SELECT queries
-    public void executeQuery(String sqlCommand) throws SQLException {
+    public ResultSet executeQuery(String sqlCommand, String login, String pass) throws SQLException {
         try (PreparedStatement pstmt = conn.prepareStatement(sqlCommand);
              ResultSet rs = pstmt.executeQuery()) {
 
@@ -38,15 +38,19 @@ public class DBConnection {
             int columnCount = metaData.getColumnCount();
 
             while (rs.next()) {
-                for (int i = 1; i <= columnCount; i++) {
-                    System.out.print(rs.getString(i) + " ");
-                }
+              //  for (int i = 1; i <= columnCount; i++) {
+                   if (rs.getString(5).equals(login) && rs.getString(6).equals(pass)){
+                       System.out.println("LOGIN OK");
+                   }
+                //}
                 System.out.println();
             }
+           return rs;
         } catch (SQLException e) {
             System.err.println("Error executing query: " + e.getMessage());
             throw e;
         }
+
     }
 
     // Close the database connection when done
