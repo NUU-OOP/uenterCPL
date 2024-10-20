@@ -9,11 +9,32 @@ import javafx.scene.shape.Shape;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.Text;
+import org.example.dbconnnection.DBConnection;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Spots extends Pane{
-    protected Color color = Color.GREEN;
+    protected Rectangle rectangle = new Rectangle();
+    private  int ID;
+    public Spots(int width, int height, int ID){
+        rectangle.setStroke(Color.BLUE);
+        rectangle.setFill(Color.WHITE);
+        rectangle.setArcWidth(10);
+        rectangle.setArcHeight(10);
+        rectangle.setStrokeWidth(3);
+        rectangle.setWidth(width);
+        rectangle.setHeight(height);
+        rectangle.setOnMouseClicked(event -> {
+            rectangle.setStroke(Color.RED);
+
+
+        });
+        this.ID = ID;
+    }
+    public void setColor(Color color){
+        this.rectangle.setStroke(color);
+    }
     protected abstract void createRectangle();
+
 }

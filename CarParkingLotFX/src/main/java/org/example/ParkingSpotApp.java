@@ -9,6 +9,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import org.example.dbconnnection.DBConnection;
 import org.example.floor.Spots;
@@ -47,7 +48,11 @@ public class ParkingSpotApp extends Application {
         while (rs.next()){
 
             if (rs.getString(2).equals(CarType.HANDICAPPED.toString())){
-                carCollections.add(new HandicappedSpot());
+                HandicappedSpot h = new HandicappedSpot();
+                if (rs.getString(4).equals("1")){
+                    h.setColor(Color.RED);
+                }
+                carCollections.add(h);
             }
             if (rs.getString(2).equals(CarType.EVCAR.toString())){
                 carCollections.add(new EvCarSpot());
@@ -73,36 +78,22 @@ public class ParkingSpotApp extends Application {
         while (rsBike.next()) {
 
             if (rsBike.getString(2).equals(CarType.BIKE.toString())) {
-                bikeCollections.add(new BikeSpot());
+                BikeSpot bikeSpot = new BikeSpot();
+                bikeSpot.setRotate(90);
+                bikeCollections.add(bikeSpot);
+
+
             }
         }
         // Add BikeSpots to the VBox
         bikeBox.getChildren().addAll(bikeCollections);
-
+        //Truck spot added
         HBox truckBox = new HBox(10);
-        // Create and add TruckSpot instances to the VBox
-//        TruckSpot truckSpot1 = new TruckSpot();
-//        TruckSpot truckSpot2 = new TruckSpot();
-//        TruckSpot truckSpot3 = new TruckSpot();
-//        TruckSpot truckSpot4 = new TruckSpot();
-//        TruckSpot truckSpot5 = new TruckSpot();
-//        TruckSpot truckSpot6 = new TruckSpot();
-//        TruckSpot truckSpot7 = new TruckSpot();
-//        TruckSpot truckSpot8 = new TruckSpot();
-//        TruckSpot truckSpot9 = new TruckSpot();
-//        TruckSpot truckSpot10 = new TruckSpot();
-
 
         List<Spots> truckCollections = new ArrayList<>();
-
-
         ResultSet rsT = dbcon.executeQuery("SELECT * FROM Spot WHERE SpotType IN ('TRUCK') ORDER BY SpotNumber;");
-
         while (rsT.next()){
-
-            if (rsT.getString(2).equals(CarType.TRUCK.toString())){
                 truckCollections.add(new TruckSpot());
-            }
         }
 //        tilePane.getChildren().addAll(carCollectionsT);
 

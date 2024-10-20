@@ -11,21 +11,13 @@ import org.example.floor.Spots;
 public class HandicappedSpot extends Spots {
 
     public HandicappedSpot() {
+        super(30, 50, 1);
         createRectangle();
     }
 
 
     @Override
     protected void createRectangle() {
-        // Create the rectangle
-        Rectangle rectangle = new Rectangle();
-        rectangle.setWidth(30);   // Width set to 30
-        rectangle.setHeight(50);  // Height set to 50
-        rectangle.setArcWidth(10); // Rounded corners
-        rectangle.setArcHeight(10);
-        rectangle.setFill(Color.WHITE); // Fill color is white
-        rectangle.setStroke(Color.BLUE); // Stroke is blue
-        rectangle.setStrokeWidth(3);
 
         // Create an ImageView to display the handicapped icon
         Image image = new Image(getClass().getResource("/img.png").toExternalForm());

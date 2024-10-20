@@ -13,28 +13,16 @@ import org.example.floor.Spots;
 public class TruckSpot extends Spots {
 
     public TruckSpot() {
+        super(35, 100, 1);
         createRectangle();
-    }
 
-//    private void createRectangleWithText() {
-//
-//    }
+    }
 
     @Override
     protected void createRectangle() {
         // Create a StackPane to hold both the rectangle and the text
         StackPane stackPane = new StackPane();
-
         // Create the rectangle
-        Rectangle rectangle = new Rectangle();
-        rectangle.setWidth(35);
-        rectangle.setHeight(100);
-        rectangle.setArcWidth(10);
-        rectangle.setArcHeight(10);
-        rectangle.setFill(Color.WHITE);
-        rectangle.setStroke(Color.BLUE);
-        rectangle.setStrokeWidth(3);
-
         // Create the text
         Text text = new Text("Truck");
         text.setFill(Color.BLACK); // Text color is black

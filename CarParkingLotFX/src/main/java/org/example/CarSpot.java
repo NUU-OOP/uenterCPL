@@ -8,19 +8,14 @@ import org.example.floor.Spots;
 public class CarSpot extends Spots {
 
     public CarSpot() {
+        super(30, 50);
         createRectangle();
     }
 
     @Override
     protected void createRectangle() {
-        Rectangle rectangle = new Rectangle();
         rectangle.setWidth(30);   // Width set to 30 for CarSpot
         rectangle.setHeight(50);  // Height set to 50 for CarSpot
-        rectangle.setArcWidth(10); // Rounded corners
-        rectangle.setArcHeight(10);
-        rectangle.setFill(Color.WHITE); // Fill color is white
-        rectangle.setStroke(Color.BLUE); // Stroke is blue
-        rectangle.setStrokeWidth(3);
         this.getChildren().add(rectangle);
     }
 
