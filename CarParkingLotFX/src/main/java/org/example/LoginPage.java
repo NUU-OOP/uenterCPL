@@ -35,8 +35,7 @@ public class LoginPage extends Pane {
         Button submitButton = new Button("Submit");
         submitButton.setOnAction(e -> {
             try {
-                System.out.println(role.getItems().getFirst());
-                submit(role.getItems().toString());
+                submit(role.getValue());
             } catch (SQLException ex) {
                 throw new RuntimeException(ex);
             }
@@ -71,17 +70,23 @@ public class LoginPage extends Pane {
         }
         if (role.equals("Attendant")){
             //TODO Write code to connect database then check if user exist or not
+            if (loginField.getText().isEmpty() || passwordField.getText().isEmpty()) {
+                showAlert("Missing Information", "Please enter login and password.");
+            }
+            else{
             String Sql="SELECT login, password FROM Attendant";
             DBConnection DBcon=new DBConnection();
             ResultSet rset=DBcon.executeQuery(Sql);
+            boolean status=false;
             while(rset.next()){
                 if(rset.getString(1).equals(loginField.getText()) && rset.getString(2).equals(passwordField.getText())){
-                    System.out.println("login found");
+                    status=true; break;
                 }
-                else System.out.println("login don't found");
+                else status=false;
             }
-
-        }
+            if(status) showAlert("Success message","login found");
+            else showAlert("Error message","Login don't found");
+        }}
     }
 
     private void showAlert(String title, String message) {
