@@ -7,7 +7,6 @@ import javafx.geometry.Insets;
 import org.example.dbconnnection.DBConnection;
 
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 
 public class LoginPage extends Pane {
@@ -36,7 +35,8 @@ public class LoginPage extends Pane {
         Button submitButton = new Button("Submit");
         submitButton.setOnAction(e -> {
             try {
-                submit("Attendant");
+                System.out.println(role.getItems().getFirst());
+                submit(role.getItems().toString());
             } catch (SQLException ex) {
                 throw new RuntimeException(ex);
             }
@@ -71,23 +71,15 @@ public class LoginPage extends Pane {
         }
         if (role.equals("Attendant")){
             //TODO Write code to connect database then check if user exist or not
-            DBConnection dbConnection = new DBConnection();
-          ResultSet resultSet  = dbConnection.executeQuery("SELECT * FROM Attendant","1236","123123");
-//          ResultSetMetaData metaData = resultSet.getMetaData();
-//          int columnCount = metaData.getColumnCount();
-//            System.out.println(columnCount);
-
-          while (resultSet.next()){
-              System.out.println("Checking");
-              System.out.println(resultSet.getString(1));
-//              if (resultSet.getString(1).equals("1236") && resultSet.getString(2).equals("123123")){
-//                  System.out.println("FOUND");
-//              }
-          }
-
-
-
-
+            String Sql="SELECT login, password FROM Attendant";
+            DBConnection DBcon=new DBConnection();
+            ResultSet rset=DBcon.executeQuery(Sql);
+            while(rset.next()){
+                if(rset.getString(1).equals(loginField.getText()) && rset.getString(2).equals(passwordField.getText())){
+                    System.out.println("login found");
+                }
+                else System.out.println("login don't found");
+            }
 
         }
     }

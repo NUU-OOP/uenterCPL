@@ -4,15 +4,15 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.layout.StackPane;
+import org.example.floor.Spots;
 
-public class BikeSpot extends Pane {
+public class BikeSpot extends Spots {
 
     public BikeSpot() {
-        createBikeSpot();
+        createRectangle();
     }
-
-    private void createBikeSpot() {
-        // Create the rectangle for the bike spot
+    @Override
+    protected void createRectangle() {
         Rectangle rectangle = new Rectangle();
         rectangle.setWidth(20);   // Smaller width for a bike spot
         rectangle.setHeight(40);  // Smaller height for a bike spot
