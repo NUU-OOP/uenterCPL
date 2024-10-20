@@ -1,4 +1,4 @@
 package org.example.form;
 
-public class Admin {
+public class AdminMenu {
 }
