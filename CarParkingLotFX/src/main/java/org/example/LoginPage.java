@@ -7,6 +7,7 @@ import javafx.geometry.Insets;
 import org.example.dbconnnection.DBConnection;
 
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 
 public class LoginPage extends Pane {
@@ -35,7 +36,7 @@ public class LoginPage extends Pane {
         Button submitButton = new Button("Submit");
         submitButton.setOnAction(e -> {
             try {
-                submit(role.getValue());
+                submit("Attendant");
             } catch (SQLException ex) {
                 throw new RuntimeException(ex);
             }
@@ -70,23 +71,25 @@ public class LoginPage extends Pane {
         }
         if (role.equals("Attendant")){
             //TODO Write code to connect database then check if user exist or not
-            if (loginField.getText().isEmpty() || passwordField.getText().isEmpty()) {
-                showAlert("Missing Information", "Please enter login and password.");
-            }
-            else{
-            String Sql="SELECT login, password FROM Attendant";
-            DBConnection DBcon=new DBConnection();
-            ResultSet rset=DBcon.executeQuery(Sql);
-            boolean status=false;
-            while(rset.next()){
-                if(rset.getString(1).equals(loginField.getText()) && rset.getString(2).equals(passwordField.getText())){
-                    status=true; break;
-                }
-                else status=false;
-            }
-            if(status) showAlert("Success message","login found");
-            else showAlert("Error message","Login don't found");
-        }}
+            DBConnection dbConnection = new DBConnection();
+          ResultSet resultSet  = dbConnection.executeQuery("SELECT * FROM Attendant","1236","123123");
+//          ResultSetMetaData metaData = resultSet.getMetaData();
+//          int columnCount = metaData.getColumnCount();
+//            System.out.println(columnCount);
+
+          while (resultSet.next()){
+              System.out.println("Checking");
+              System.out.println(resultSet.getString(1));
+//              if (resultSet.getString(1).equals("1236") && resultSet.getString(2).equals("123123")){
+//                  System.out.println("FOUND");
+//              }
+          }
+
+
+
+
+
+        }
     }
 
     private void showAlert(String title, String message) {
