@@ -41,9 +41,7 @@ public class ParkingSpotApp extends Application {
         // Create and add CarSpot instances
         List<Spots> carCollections = new ArrayList<>();
 
-        ResultSet rs = dbcon.executeQuery(
-                "SELECT * FROM Spot WHERE SpotType IN ('CAR', 'EVCAR', 'HANDICAPPED') ORDER BY SpotNumber;"
-        );
+        ResultSet rs = dbcon.executeQuery("SELECT * FROM Spot WHERE SpotType IN ('CAR', 'EVCAR', 'HANDICAPPED') ORDER BY SpotNumber;");
 
 
         while (rs.next()){
@@ -69,43 +67,45 @@ public class ParkingSpotApp extends Application {
         VBox bikeBox = new VBox(10); // 10 is the vertical spacing between each spot
 
         // Create and add BikeSpot instances to VBox
-        BikeSpot bikeSpot1 = new BikeSpot();
-        BikeSpot bikeSpot2 = new BikeSpot();
-        BikeSpot bikeSpot3 = new BikeSpot();
-        BikeSpot bikeSpot4 = new BikeSpot();
-        BikeSpot bikeSpot5 = new BikeSpot();
-        BikeSpot bikeSpot6 = new BikeSpot();
-        BikeSpot bikeSpot7 = new BikeSpot();
-        BikeSpot bikeSpot8 = new BikeSpot();
-        BikeSpot bikeSpot9 = new BikeSpot();
-        BikeSpot bikeSpot10 = new BikeSpot();
-        bikeSpot1.setRotate(90);
-        bikeSpot2.setRotate(90);
-        bikeSpot3.setRotate(90);
-        bikeSpot4.setRotate(90);
-        bikeSpot5.setRotate(90);
-        bikeSpot6.setRotate(90);
-        bikeSpot7.setRotate(90);
-        bikeSpot8.setRotate(90);
-        bikeSpot9.setRotate(90);
-        bikeSpot10.setRotate(90);
+        List<Spots> bikeCollections = new ArrayList<>();
 
+        ResultSet rsBike = dbcon.executeQuery("SELECT * FROM Spot WHERE SpotType IN ('BIKE') ORDER BY SpotNumber;");
+        while (rsBike.next()) {
+
+            if (rsBike.getString(2).equals(CarType.BIKE.toString())) {
+                bikeCollections.add(new BikeSpot());
+            }
+        }
         // Add BikeSpots to the VBox
-        bikeBox.getChildren().addAll(bikeSpot1, bikeSpot2, bikeSpot3, bikeSpot4, bikeSpot5,
-                                  bikeSpot6, bikeSpot7, bikeSpot8, bikeSpot9, bikeSpot10);
+        bikeBox.getChildren().addAll(bikeCollections);
 
         HBox truckBox = new HBox(10);
         // Create and add TruckSpot instances to the VBox
-        TruckSpot truckSpot1 = new TruckSpot();
-        TruckSpot truckSpot2 = new TruckSpot();
-        TruckSpot truckSpot3 = new TruckSpot();
-        TruckSpot truckSpot4 = new TruckSpot();
-        TruckSpot truckSpot5 = new TruckSpot();
-        TruckSpot truckSpot6 = new TruckSpot();
-        TruckSpot truckSpot7 = new TruckSpot();
-        TruckSpot truckSpot8 = new TruckSpot();
-        TruckSpot truckSpot9 = new TruckSpot();
-        TruckSpot truckSpot10 = new TruckSpot();
+//        TruckSpot truckSpot1 = new TruckSpot();
+//        TruckSpot truckSpot2 = new TruckSpot();
+//        TruckSpot truckSpot3 = new TruckSpot();
+//        TruckSpot truckSpot4 = new TruckSpot();
+//        TruckSpot truckSpot5 = new TruckSpot();
+//        TruckSpot truckSpot6 = new TruckSpot();
+//        TruckSpot truckSpot7 = new TruckSpot();
+//        TruckSpot truckSpot8 = new TruckSpot();
+//        TruckSpot truckSpot9 = new TruckSpot();
+//        TruckSpot truckSpot10 = new TruckSpot();
+
+
+        List<Spots> truckCollections = new ArrayList<>();
+
+
+        ResultSet rsT = dbcon.executeQuery("SELECT * FROM Spot WHERE SpotType IN ('TRUCK') ORDER BY SpotNumber;");
+
+        while (rsT.next()){
+
+            if (rsT.getString(2).equals(CarType.TRUCK.toString())){
+                truckCollections.add(new TruckSpot());
+            }
+        }
+//        tilePane.getChildren().addAll(carCollectionsT);
+
         //Entrance gate
         Entrance entrance = new Entrance();
         Entrance entrance1 = new Entrance();
@@ -120,8 +120,9 @@ public class ParkingSpotApp extends Application {
         HBox exitBox = new HBox(90);
         exitBox.getChildren().addAll(exit1, exit2);
         // Add TruckSpots to the VBox
-        truckBox.getChildren().addAll(truckSpot1, truckSpot2, truckSpot3, truckSpot4, truckSpot5,
-                truckSpot6, truckSpot7, truckSpot8, truckSpot9, truckSpot10);
+//        truckBox.getChildren().addAll(truckSpot1, truckSpot2, truckSpot3, truckSpot4, truckSpot5,
+//                truckSpot6, truckSpot7, truckSpot8, truckSpot9, truckSpot10);
+        truckBox.getChildren().addAll(truckCollections);
         HBox bottomContainer = new HBox(50);
         bottomContainer.getChildren().addAll(truckBox, exitBox);
         borderPane.setPadding(new Insets(10,10,10,10));

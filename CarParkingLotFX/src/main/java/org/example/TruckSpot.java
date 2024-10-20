@@ -8,14 +8,20 @@ import javafx.scene.text.FontPosture;
 import javafx.scene.text.Text;
 import javafx.geometry.Pos;
 import javafx.scene.layout.StackPane;
+import org.example.floor.Spots;
 
-public class TruckSpot extends Pane {
+public class TruckSpot extends Spots {
 
     public TruckSpot() {
-        createRectangleWithText();
+        createRectangle();
     }
 
-    private void createRectangleWithText() {
+//    private void createRectangleWithText() {
+//
+//    }
+
+    @Override
+    protected void createRectangle() {
         // Create a StackPane to hold both the rectangle and the text
         StackPane stackPane = new StackPane();
 
