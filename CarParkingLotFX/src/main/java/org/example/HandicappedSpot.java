@@ -6,14 +6,17 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.layout.StackPane;
+import org.example.floor.Spots;
 
-public class HandicappedSpot extends Pane {
+public class HandicappedSpot extends Spots {
 
     public HandicappedSpot() {
-        createHandicappedSpot();
+        createRectangle();
     }
 
-    private void createHandicappedSpot() {
+
+    @Override
+    protected void createRectangle() {
         // Create the rectangle
         Rectangle rectangle = new Rectangle();
         rectangle.setWidth(30);   // Width set to 30

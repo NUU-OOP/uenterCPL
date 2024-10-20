@@ -7,14 +7,16 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.Text;
 import javafx.scene.layout.StackPane;
+import org.example.floor.Spots;
 
-public class EvCarSpot extends Pane {
+public class EvCarSpot extends Spots{
 
     public EvCarSpot() {
         createRectangle();
     }
 
-    private void createRectangle() {
+    @Override
+    protected void createRectangle() {
         // Create the rectangle
         Rectangle rectangle = new Rectangle();
         rectangle.setWidth(30);   // Width set to 30 for EvCarSpot

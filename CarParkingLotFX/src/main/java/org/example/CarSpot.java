@@ -3,14 +3,16 @@ package org.example;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import org.example.floor.Spots;
 
-public class CarSpot extends Pane {
+public class CarSpot extends Spots {
 
     public CarSpot() {
         createRectangle();
     }
 
-    private void createRectangle() {
+    @Override
+    protected void createRectangle() {
         Rectangle rectangle = new Rectangle();
         rectangle.setWidth(30);   // Width set to 30 for CarSpot
         rectangle.setHeight(50);  // Height set to 50 for CarSpot
@@ -19,7 +21,11 @@ public class CarSpot extends Pane {
         rectangle.setFill(Color.WHITE); // Fill color is white
         rectangle.setStroke(Color.BLUE); // Stroke is blue
         rectangle.setStrokeWidth(3);
-
         this.getChildren().add(rectangle);
     }
+
+//    @Override
+//    void createRectangle() {
+
+//    }
 }

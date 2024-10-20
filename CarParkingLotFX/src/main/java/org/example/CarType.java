@@ -1,5 +1,5 @@
 package org.example;
 
 public enum CarType {
-    HANDICAPPED, ELECTRIC, SERVICE
+    HANDICAPPED, EVCAR, CAR, TRUCK, BIKE
 }

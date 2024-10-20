@@ -33,19 +33,26 @@ public class DBConnection {
     public ResultSet executeQuery(String sqlCommand, String login, String pass) throws SQLException {
         try (PreparedStatement pstmt = conn.prepareStatement(sqlCommand);
              ResultSet rs = pstmt.executeQuery()) {
-
-            ResultSetMetaData metaData = rs.getMetaData();
-            int columnCount = metaData.getColumnCount();
-
             while (rs.next()) {
-              //  for (int i = 1; i <= columnCount; i++) {
+                System.out.println("LOGIN CHECKING!");
                    if (rs.getString(5).equals(login) && rs.getString(6).equals(pass)){
                        System.out.println("LOGIN OK");
                    }
-                //}
                 System.out.println();
             }
            return rs;
+        } catch (SQLException e) {
+            System.err.println("Error executing query: " + e.getMessage());
+            throw e;
+        }
+
+    }
+    // Method to execute and print results of SELECT queries
+    public ResultSet executeQuery(String sqlCommand) throws SQLException {
+        try  {
+            PreparedStatement pstmt = conn.prepareStatement(sqlCommand);
+            ResultSet rs = pstmt.executeQuery();
+            return rs;
         } catch (SQLException e) {
             System.err.println("Error executing query: " + e.getMessage());
             throw e;

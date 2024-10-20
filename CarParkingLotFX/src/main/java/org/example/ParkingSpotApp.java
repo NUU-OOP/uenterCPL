@@ -10,11 +10,19 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import org.example.dbconnnection.DBConnection;
+import org.example.floor.Spots;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ParkingSpotApp extends Application {
 
     @Override
-    public void start(Stage primaryStage) {
+    public void start(Stage primaryStage) throws SQLException {
+        DBConnection dbcon = new DBConnection();
         primaryStage.setTitle("First floor");
         Button left = new Button("Left");
         Button right = new Button("Right");
@@ -31,61 +39,27 @@ public class ParkingSpotApp extends Application {
         tilePane.setVgap(10); // Vertical gap between tiles
 
         // Create and add CarSpot instances
-        org.example.CarSpot carSpot1 = new org.example.CarSpot();
-        org.example.CarSpot carSpot2 = new org.example.CarSpot();
-        org.example.CarSpot carSpot3 = new org.example.CarSpot();
-        org.example.CarSpot carSpot4 = new org.example.CarSpot();
-        org.example.CarSpot carSpot5 = new org.example.CarSpot();
-        org.example.CarSpot carSpot6 = new org.example.CarSpot();
-        org.example.CarSpot carSpot7 = new org.example.CarSpot();
-        org.example.CarSpot carSpot8 = new org.example.CarSpot();
-        org.example.CarSpot carSpot9 = new org.example.CarSpot();
-        org.example.CarSpot carSpot10 = new org.example.CarSpot();
-        org.example.CarSpot carSpot11 = new org.example.CarSpot();
-        org.example.CarSpot carSpot12 = new org.example.CarSpot();
-        org.example.CarSpot carSpot13 = new org.example.CarSpot();
-        org.example.CarSpot carSpot14 = new org.example.CarSpot();
-        org.example.CarSpot carSpot15 = new org.example.CarSpot();
-        org.example.CarSpot carSpot16 = new org.example.CarSpot();
-        org.example.CarSpot carSpot17 = new org.example.CarSpot();
-        org.example.CarSpot carSpot18 = new org.example.CarSpot();
-        org.example.CarSpot carSpot19 = new org.example.CarSpot();
-        org.example.CarSpot carSpot20 = new CarSpot();
+        List<Spots> carCollections = new ArrayList<>();
 
-        // Add all CarSpots to TilePane
-        tilePane.getChildren().addAll(carSpot1, carSpot2, carSpot3, carSpot4, carSpot5,
-                                      carSpot6, carSpot7, carSpot8, carSpot9, carSpot10,
-                                      carSpot11, carSpot12, carSpot13, carSpot14, carSpot15,
-                                      carSpot16, carSpot17, carSpot18, carSpot19, carSpot20);
-
-        // Create and add EvCarSpot instances
-        EvCarSpot evCarSpot1 = new EvCarSpot();
-        EvCarSpot evCarSpot2 = new EvCarSpot();
-        EvCarSpot evCarSpot3 = new EvCarSpot();
-        EvCarSpot evCarSpot4 = new EvCarSpot();
-        EvCarSpot evCarSpot5 = new EvCarSpot();
-        EvCarSpot evCarSpot6 = new EvCarSpot();
-        EvCarSpot evCarSpot7 = new EvCarSpot();
-        EvCarSpot evCarSpot8 = new EvCarSpot();
-        EvCarSpot evCarSpot9 = new EvCarSpot();
-        EvCarSpot evCarSpot10 = new EvCarSpot();
-
-        // Add all EvCarSpots to TilePane
-        tilePane.getChildren().addAll(evCarSpot1, evCarSpot2, evCarSpot3, evCarSpot4, evCarSpot5,
-                                      evCarSpot6, evCarSpot7, evCarSpot8, evCarSpot9, evCarSpot10);
-
-        // Create and add HandicappedSpot instances
-        HandicappedSpot handicappedSpot1 = new HandicappedSpot();
-        HandicappedSpot handicappedSpot2 = new HandicappedSpot();
-        HandicappedSpot handicappedSpot3 = new HandicappedSpot();
-        HandicappedSpot handicappedSpot4 = new HandicappedSpot();
-        HandicappedSpot handicappedSpot5 = new HandicappedSpot();
-
-        // Add all HandicappedSpots to TilePane
-        tilePane.getChildren().addAll(handicappedSpot1, handicappedSpot2, handicappedSpot3,
-                                      handicappedSpot4, handicappedSpot5);
+        ResultSet rs = dbcon.executeQuery(
+                "SELECT * FROM Spot WHERE SpotType IN ('CAR', 'EVCAR', 'HANDICAPPED') ORDER BY SpotNumber;"
+        );
 
 
+        while (rs.next()){
+
+            if (rs.getString(2).equals(CarType.HANDICAPPED.toString())){
+                carCollections.add(new HandicappedSpot());
+            }
+            if (rs.getString(2).equals(CarType.EVCAR.toString())){
+                carCollections.add(new EvCarSpot());
+            }
+            if (rs.getString(2).equals(CarType.CAR.toString())){
+                carCollections.add(new CarSpot());
+            }
+
+        }
+        tilePane.getChildren().addAll(carCollections);
 
         // Create an HBox for TruckSpot objects
         HBox hbox = new HBox(10); // 10 is the spacing between each spot
