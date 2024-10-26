@@ -79,17 +79,19 @@ public class AttendantForm extends Application {
             }else {
                 try {
                     insetTable(nameField.getText(), loginField.getText(), passwordField.getText(), phoneField.getText(), ageField.getText());
+                    nameField.clear();
+                    loginField.clear();
+                    passwordField.clear();
+                    phoneField.clear();
+                    ageField.clear();
+
                 } catch (Exception exception){
                     showAlert("Same login info", "Same log info");
                 }
 
 
 
-                nameField.setText(null);
-                loginField.setText(null);
-                passwordField.setText(null);
-                phoneField.setText(null);
-                ageField.setText(null);
+
             }
 
         });
