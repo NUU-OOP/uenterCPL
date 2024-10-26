@@ -4,10 +4,7 @@ import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -15,9 +12,19 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 import org.example.SpotType;
+import org.example.dbconnnection.DBConnection;
 import org.example.spots.CarSpot;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+
 public class UserInputForm extends Application {
+    DBConnection dbcon=new DBConnection();
+    private Connection conn= dbcon.getConnection();
+
+    public UserInputForm() throws SQLException {
+    }
 
     @Override
     public void start(Stage primaryStage) {
@@ -85,7 +92,17 @@ public class UserInputForm extends Application {
         // Set both buttons to have equal width
         saveButton.setMinWidth(100);
         cancelButton.setMinWidth(100);
-
+        saveButton.setOnAction(e->{
+            if (nameInput.getText().isEmpty() || phoneInput.getText().isEmpty() || carNumberInput.getText().isEmpty()) {
+                showAlert("Missing Information", "Please enter name,login,password and phone.");
+            }else{
+                    insertMember(nameInput.getText(),phoneInput.getText(),carNumberInput.getText(),carTypeComboBox.getValue().toString());
+                    nameInput.clear();
+                    phoneInput.clear();
+                    carNumberInput.clear();
+            }
+        });
+        cancelButton.setOnAction(e->System.exit(0));
         // Add buttons to HBox
         buttonBox.getChildren().addAll(saveButton, cancelButton);
 
@@ -96,6 +113,25 @@ public class UserInputForm extends Application {
         Scene scene = new Scene(mainLayout, 400, 350);
         primaryStage.setScene(scene);
         primaryStage.show();
+    }
+    private void showAlert(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+    private void insertMember(String name,String phone,String carNumber,String carType){
+        String sql="INSERT INTO Member(Name,PhoneNumber,CarNumber,CarType) VALUES(?,?,?,?);";
+        try(PreparedStatement pstmt=conn.prepareStatement(sql)){
+            pstmt.setString(1,name);
+            pstmt.setString(2,phone);
+            pstmt.setString(3,carNumber);
+            pstmt.setString(4,carType);
+            pstmt.execute();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public static void main(String[] args) {

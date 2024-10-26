@@ -89,7 +89,12 @@ public class CustomMenuBar {
         // Add actions for Personnel Management items
         addMember.setOnAction(e ->
         {
-            UserInputForm userInputForm=new UserInputForm();
+            UserInputForm userInputForm= null;
+            try {
+                userInputForm = new UserInputForm();
+            } catch (SQLException ex) {
+                throw new RuntimeException(ex);
+            }
             userInputForm.start(new Stage());
             //System.out.println("Add Member selected");
         });
