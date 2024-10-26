@@ -13,6 +13,7 @@ import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 import org.example.dbconnnection.DBConnection;
+import org.sqlite.SQLiteException;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -76,7 +77,14 @@ public class AttendantForm extends Application {
             if (nameField.getText().isEmpty() || loginField.getText().isEmpty() || passwordField.getText().isEmpty() || phoneField.getText().isEmpty()) {
                 showAlert("Missing Information", "Please enter name,login,password and phone.");
             }else {
-                insetTable(nameField.getText(), loginField.getText(), passwordField.getText(), phoneField.getText(), ageField.getText());
+                try {
+                    insetTable(nameField.getText(), loginField.getText(), passwordField.getText(), phoneField.getText(), ageField.getText());
+                } catch (Exception exception){
+                    showAlert("Same login info", "Same log info");
+                }
+
+
+
                 nameField.setText(null);
                 loginField.setText(null);
                 passwordField.setText(null);
