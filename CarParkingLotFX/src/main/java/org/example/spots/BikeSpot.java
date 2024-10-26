@@ -1,14 +1,11 @@
-package org.example;
+package org.example.spots;
 
-import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.layout.StackPane;
-import org.example.floor.Spots;
 
 public class BikeSpot extends Spots {
 
-    public BikeSpot(int ID) {
+    public BikeSpot(String ID) {
         super(20, 40, ID);
         createRectangle();
 

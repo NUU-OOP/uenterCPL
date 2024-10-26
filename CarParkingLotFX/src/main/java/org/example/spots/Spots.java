@@ -1,4 +1,4 @@
-package org.example.floor;
+package org.example.spots;
 
 import javafx.scene.Node;
 import javafx.scene.layout.Pane;
@@ -16,8 +16,8 @@ import java.util.List;
 
 public abstract class Spots extends Pane{
     protected Rectangle rectangle = new Rectangle();
-    private  int ID;
-    public Spots(int width, int height, int ID){
+    private  String ID;
+    public Spots(int width, int height, String ID){
         rectangle.setStroke(Color.BLUE);
         rectangle.setFill(Color.WHITE);
         rectangle.setArcWidth(10);
@@ -27,8 +27,6 @@ public abstract class Spots extends Pane{
         rectangle.setHeight(height);
         rectangle.setOnMouseClicked(event -> {
             rectangle.setStroke(Color.RED);
-
-
         });
         this.ID = ID;
     }

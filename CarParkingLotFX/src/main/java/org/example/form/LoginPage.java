@@ -1,4 +1,4 @@
-package org.example;
+package org.example.form;
 
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
@@ -26,14 +26,16 @@ public class LoginPage extends Pane {
         role.getItems().add("Admin");
         role.getItems().add("Attendant");
         role.setPromptText("Select role for login");
-
-
         // Initialize the instance variables
         loginField = new TextField();
         passwordField = new PasswordField();
 
         // Create the submit button
         Button submitButton = new Button("Submit");
+        Button cancelButton = new Button("Cancel");
+        cancelButton.setOnAction(e->{
+            System.exit(0);
+        });
         submitButton.setOnAction(e -> {
             try {
                 submit("Attendant");
@@ -53,9 +55,9 @@ public class LoginPage extends Pane {
         gridPane.add(passwordLabel, 0, 1);
         gridPane.add(passwordField, 1, 1);
         gridPane.add(role, 1, 2);
-        gridPane.add(submitButton, 2, 2);
+        gridPane.add(submitButton, 1, 3);
+        gridPane.add(cancelButton,2,3);
         this.getChildren().add(gridPane);
-
     }
 
     // Check if fields are empty and show alert
@@ -70,7 +72,7 @@ public class LoginPage extends Pane {
             }
         }
         if (role.equals("Attendant")){
-            //TODO Write code to connect database then check if user exist or not
+
             DBConnection dbConnection = new DBConnection();
           ResultSet resultSet  = dbConnection.executeQuery("SELECT * FROM Attendant","1236","123123");
 //          ResultSetMetaData metaData = resultSet.getMetaData();
@@ -84,11 +86,6 @@ public class LoginPage extends Pane {
 //                  System.out.println("FOUND");
 //              }
           }
-
-
-
-
-
         }
     }
 

@@ -1,19 +1,16 @@
-package org.example;
+package org.example.spots;
 
-import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.Text;
 import javafx.geometry.Pos;
 import javafx.scene.layout.StackPane;
-import org.example.floor.Spots;
 
 public class TruckSpot extends Spots {
 
     public TruckSpot() {
-        super(35, 100, 1);
+        super(35, 100, "F26");
         createRectangle();
 
     }

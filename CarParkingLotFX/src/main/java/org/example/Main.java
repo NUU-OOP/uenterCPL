@@ -11,6 +11,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import org.example.dbconnnection.DBConnection;
+import org.example.form.*;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -22,9 +23,9 @@ public class Main extends Application {
     public static final String DB_URL = "jdbc:sqlite:university.db";
     @Override
     public void start(Stage primaryStage) throws Exception {
-        LoginPage loginPage = new LoginPage();
-        Scene scene = new Scene(loginPage);
-        primaryStage.setScene(scene);
+        //EntranceForm paymentForm = new EntranceForm();
+//        Scene scene = new Scene(paymentForm);
+//        primaryStage.setScene(scene);
         primaryStage.show();
     }
 

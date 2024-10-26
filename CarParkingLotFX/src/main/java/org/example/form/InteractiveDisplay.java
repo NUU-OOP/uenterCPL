@@ -1,4 +1,5 @@
-package org.example;
+package org.example.form;
+
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -6,6 +7,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderStroke;
 import javafx.scene.layout.BorderStrokeStyle;
 import javafx.scene.layout.BorderWidths;
@@ -13,14 +15,12 @@ import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.layout.Border;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 
 public class InteractiveDisplay extends Application {
-
 
     @Override
     public void start(Stage primaryStage) {
@@ -31,9 +31,7 @@ public class InteractiveDisplay extends Application {
         mainLayout.setPadding(new Insets(20));
         mainLayout.setAlignment(Pos.TOP_CENTER);
 
-        // Title label with enhanced font
-        Label titleLabel = new Label("Interactive Display");
-        titleLabel.setFont(Font.font("Arial", FontWeight.BOLD, 24));
+
 
         // Grid for the car search section
         GridPane searchGrid = new GridPane();
@@ -54,7 +52,13 @@ public class InteractiveDisplay extends Application {
         searchGrid.add(carNumberInput, 1, 0);
         searchGrid.add(searchButton, 2, 0);
 
-        // VBox for the details (Entering time, Charging fee, Total payment)
+        // "RECEIPT" label before the details box
+        Label receiptLabel = new Label("RECEIPT:");
+        receiptLabel.setFont(Font.font("Arial", FontWeight.BOLD, 18));
+        receiptLabel.setTextFill(Color.DARKBLUE);
+        receiptLabel.setAlignment(Pos.CENTER_LEFT);
+
+        // VBox for the details (Car Number, Entering Time, Charging Fee, Total Payment)
         VBox detailsBox = new VBox(10);
         detailsBox.setPadding(new Insets(20));
         detailsBox.setAlignment(Pos.CENTER_LEFT);
@@ -67,12 +71,19 @@ public class InteractiveDisplay extends Application {
                 new BorderWidths(2)
         )));
 
+        // Detail labels
+        Label detailCarNumberLabel = new Label("Car Number:");
         Label enteringTimeLabel = new Label("Entering time:");
         Label chargingFeeLabel = new Label("Charging fee:");
         Label totalPaymentLabel = new Label("Total payment:");
 
         // Add detail labels to the details box
-        detailsBox.getChildren().addAll(enteringTimeLabel, chargingFeeLabel, totalPaymentLabel);
+        detailsBox.getChildren().addAll(
+            detailCarNumberLabel,  // Add Car Number label
+            enteringTimeLabel, 
+            chargingFeeLabel, 
+            totalPaymentLabel
+        );
 
         // HBox for Cancel and Pay buttons
         HBox buttonBox = new HBox(20);
@@ -91,7 +102,12 @@ public class InteractiveDisplay extends Application {
         buttonBox.getChildren().addAll(cancelButton, payButton);
 
         // Add all components to the main layout
-        mainLayout.getChildren().addAll(titleLabel, searchGrid, detailsBox, buttonBox);
+        mainLayout.getChildren().addAll(
+            searchGrid, 
+            receiptLabel,  // Add the "RECEIPT" label before the details box
+            detailsBox, 
+            buttonBox
+        );
 
         // Set the scene and display the form
         Scene scene = new Scene(mainLayout, 400, 400);

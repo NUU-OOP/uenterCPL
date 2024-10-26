@@ -1,17 +1,14 @@
-package org.example;
+package org.example.spots;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.layout.StackPane;
-import org.example.floor.Spots;
+import org.example.spots.Spots;
 
 public class HandicappedSpot extends Spots {
 
     public HandicappedSpot() {
-        super(30, 50, 1);
+        super(30, 50, "1");
         createRectangle();
     }
 

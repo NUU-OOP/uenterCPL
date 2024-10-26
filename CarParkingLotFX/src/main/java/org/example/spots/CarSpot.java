@@ -1,14 +1,9 @@
-package org.example;
-
-import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
-import org.example.floor.Spots;
+package org.example.spots;
 
 public class CarSpot extends Spots {
 
     public CarSpot() {
-        super(30, 50);
+        super(30, 50,"1");
         createRectangle();
     }
 

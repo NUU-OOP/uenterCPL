@@ -5,6 +5,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.MenuBar;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.TilePane;
@@ -12,7 +13,9 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import org.example.dbconnnection.DBConnection;
-import org.example.floor.Spots;
+import org.example.spots.*;
+import org.example.form.CustomMenuBar;
+import org.example.form.DisplayBoard;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -25,12 +28,12 @@ public class ParkingSpotApp extends Application {
     public void start(Stage primaryStage) throws SQLException {
         DBConnection dbcon = new DBConnection();
         primaryStage.setTitle("First floor");
-        Button left = new Button("Left");
-        Button right = new Button("Right");
         Button center = new Button("Center");
-        Button bottom = new Button("Bottom");
-        Button top = new Button("Top");
-
+        VBox topVboxwithMenu = new VBox(10);
+        DisplayBoard displayBoard = new DisplayBoard(10,100,80,100,23,25,10,15,23,25);
+        CustomMenuBar menuBars = new CustomMenuBar(primaryStage);
+        MenuBar menuBar = menuBars.createMenuBar();
+//
         // Create a BorderPane as the root layout
         BorderPane borderPane = new BorderPane();
 
@@ -47,22 +50,23 @@ public class ParkingSpotApp extends Application {
 
         while (rs.next()){
 
-            if (rs.getString(2).equals(CarType.HANDICAPPED.toString())){
+            if (rs.getString(2).equals(SpotType.HANDICAPPED.toString())){
                 HandicappedSpot h = new HandicappedSpot();
                 if (rs.getString(4).equals("1")){
                     h.setColor(Color.RED);
                 }
                 carCollections.add(h);
             }
-            if (rs.getString(2).equals(CarType.EVCAR.toString())){
+            if (rs.getString(2).equals(SpotType.ELECTRIC.toString())){
                 carCollections.add(new EvCarSpot());
             }
-            if (rs.getString(2).equals(CarType.CAR.toString())){
+            if (rs.getString(2).equals(SpotType.COMPACT.toString())){
                 carCollections.add(new CarSpot());
             }
 
         }
         tilePane.getChildren().addAll(carCollections);
+        topVboxwithMenu.getChildren().addAll(menuBar,tilePane);
 
         // Create an HBox for TruckSpot objects
         HBox hbox = new HBox(10); // 10 is the spacing between each spot
@@ -77,10 +81,10 @@ public class ParkingSpotApp extends Application {
         ResultSet rsBike = dbcon.executeQuery("SELECT * FROM Spot WHERE SpotType IN ('BIKE') ORDER BY SpotNumber;");
         while (rsBike.next()) {
 
-            if (rsBike.getString(2).equals(CarType.BIKE.toString())) {
-                BikeSpot bikeSpot = new BikeSpot();
-                bikeSpot.setRotate(90);
-                bikeCollections.add(bikeSpot);
+            if (rsBike.getString(2).equals(SpotType.MOTORBIKE.toString())) {
+//                BikeSpot bikeSpot = new BikeSpot();
+//                bikeSpot.setRotate(90);
+//                bikeCollections.add(bikeSpot);
 
 
             }
@@ -95,7 +99,6 @@ public class ParkingSpotApp extends Application {
         while (rsT.next()){
                 truckCollections.add(new TruckSpot());
         }
-//        tilePane.getChildren().addAll(carCollectionsT);
 
         //Entrance gate
         Entrance entrance = new Entrance();
@@ -110,9 +113,6 @@ public class ParkingSpotApp extends Application {
         exit2.setRotate(90);
         HBox exitBox = new HBox(90);
         exitBox.getChildren().addAll(exit1, exit2);
-        // Add TruckSpots to the VBox
-//        truckBox.getChildren().addAll(truckSpot1, truckSpot2, truckSpot3, truckSpot4, truckSpot5,
-//                truckSpot6, truckSpot7, truckSpot8, truckSpot9, truckSpot10);
         truckBox.getChildren().addAll(truckCollections);
         HBox bottomContainer = new HBox(50);
         bottomContainer.getChildren().addAll(truckBox, exitBox);
@@ -122,8 +122,8 @@ public class ParkingSpotApp extends Application {
         borderPane.setRight(bikeBox);
         borderPane.setLeft(entranceBox);
         // Set the TilePane at the top of the BorderPane
-        borderPane.setTop(tilePane);
-        borderPane.setCenter(center);
+        borderPane.setTop(topVboxwithMenu);
+        borderPane.setCenter(displayBoard);
 
 
         // Create a scene with the BorderPane as the root

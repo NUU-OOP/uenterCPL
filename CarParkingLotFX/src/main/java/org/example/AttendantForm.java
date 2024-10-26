@@ -1,114 +1,116 @@
 package org.example;
 
-import javafx.application.Application;
 import javafx.geometry.Insets;
-import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.geometry.Pos;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
-import javafx.stage.Stage;
-import org.example.dbconnnection.DBConnection;
-import org.sqlite.core.DB;
+import javafx.scene.layout.Pane;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontPosture;
+import javafx.scene.text.FontWeight;
 
-import java.sql.Connection;
-import java.sql.SQLException;
+public class AttendantForm extends Pane {
 
-public class AttendantForm extends Application {
-
-    @Override
-    public void start(Stage primaryStage) {
-        primaryStage.setTitle("Attendant Form");
-
-
-
-        // Create GridPane layout
-        GridPane grid = new GridPane();
-        grid.setPadding(new Insets(10));
-        grid.setHgap(10);
-        grid.setVgap(10);
-        // Labels and text fields
-        Label idLabel = new Label("ID:");
-        TextField idField = new TextField();
-
-        Label nameLabel = new Label("Name:");
-        TextField nameField = new TextField();
-
-        Label phoneLabel = new Label("Phone:");
-        TextField phoneField = new TextField();
-
-        Label ageLabel = new Label("Age:");
-        TextField ageField = new TextField();
-
-        Label loginLabel = new Label("Login:");
-        TextField loginField = new TextField();
-
-        Label passwordLabel = new Label("Password:");
-        PasswordField passwordField = new PasswordField();
-
-        Label gateLabel = new Label("Gate:");
-        TextField gateField = new TextField();
-
-        // Create a submit button
-        Button submitButton = new Button("Submit");
-
-        // Place elements in the grid
-
-        grid.add(idLabel, 0, 0);
-        grid.add(idField, 1, 0);
-        grid.add(nameLabel, 0, 1);
-        grid.add(nameField, 1, 1);
-
-        grid.add(phoneLabel, 0, 2);
-        grid.add(phoneField, 1, 2);
-
-        grid.add(ageLabel, 0, 3);
-        grid.add(ageField, 1, 3);
-
-        grid.add(loginLabel, 0, 4);
-        grid.add(loginField, 1, 4);
-
-        grid.add(passwordLabel, 0, 5);
-        grid.add(passwordField, 1, 5);
-
-        grid.add(gateLabel, 0, 6);
-        grid.add(gateField, 1, 6);
-
-        grid.add(submitButton, 1, 7);
-        submitButton.setOnAction(event -> {
-            try {
-                // Collect data from fields
-
-                String name = nameField.getText();
-                int phone = Integer.parseInt(phoneField.getText());
-                int age = Integer.parseInt(ageField.getText());
-                String login = loginField.getText();
-                String password = passwordField.getText();
-                int gate = Integer.parseInt(gateField.getText());
-
-                // Generate the INSERT SQL command
-                String sql = String.format(
-                        "INSERT INTO Attendant (name, phone, age, login, password, gate) " +
-                                "VALUES ('%s', %d, %d, '%s', '%s', %d);",
-                         name, phone, age, login, password, gate
-                );
-                DBConnection dbConnection = new DBConnection();
-                dbConnection.executeCommand(sql);
-                dbConnection.closeConnection();
-                System.out.println(sql);
-
-            } catch (NumberFormatException ex) {
-                System.out.println("Invalid input: " + ex.getMessage());
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
-        });
-
-        // Set the scene and display the stage
-        Scene scene = new Scene(grid, 400, 400);
-        primaryStage.setScene(scene);
-        primaryStage.show();
+    public AttendantForm() {
+        create();
     }
 
-    public static void main(String[] args) {
-        launch(args);
+    protected void create() {
+        getChildren().clear();
+
+        // Create a GridPane for layout
+        GridPane gridPane = new GridPane();
+        gridPane.setAlignment(Pos.CENTER);
+        gridPane.setHgap(10);
+        gridPane.setVgap(20);
+        gridPane.setPadding(new Insets(20));
+
+        // Define the font for all labels and text fields
+        Font font = Font.font("Courier", FontWeight.BOLD, FontPosture.ITALIC, 18);
+
+        // Name Label and TextField
+        Label nameLabel = new Label("NAME:");
+        nameLabel.setFont(font);
+        TextField nameField = new TextField();
+        nameField.setFont(font);
+
+        // Login Label and TextField
+        Label loginLabel = new Label("LOGIN:");
+        loginLabel.setFont(font);
+        TextField loginField = new TextField();
+        loginField.setFont(font);
+
+        // Password Label and PasswordField
+        Label passwordLabel = new Label("PASSWORD:");
+        passwordLabel.setFont(font);
+        PasswordField passwordField = new PasswordField();
+        passwordField.setFont(font);
+
+        // Phone Label and TextField (numeric only)
+        Label phoneLabel = new Label("PHONE:");
+        phoneLabel.setFont(font);
+        TextField phoneField = new TextField();
+        phoneField.setFont(font);
+        addNumericValidation(phoneField);
+
+        // Age Label and TextField (numeric only)
+        Label ageLabel = new Label("AGE:");
+        ageLabel.setFont(font);
+        TextField ageField = new TextField();
+        ageField.setFont(font);
+        addNumericValidation(ageField);
+
+        // Save and Cancel Buttons
+        Button saveButton = new Button("SAVE");
+        saveButton.setFont(font);
+        saveButton.setPrefSize(180, 50);
+
+        Button cancelButton = new Button("CANCEL");
+        cancelButton.setFont(font);
+        cancelButton.setPrefSize(180, 50);
+
+        // Add components to the GridPane (row, column)
+        gridPane.add(nameLabel, 0, 0);
+        gridPane.add(nameField, 1, 0);
+
+        gridPane.add(loginLabel, 0, 1);
+        gridPane.add(loginField, 1, 1);
+
+        gridPane.add(passwordLabel, 0, 2);
+        gridPane.add(passwordField, 1, 2);
+
+        gridPane.add(phoneLabel, 0, 3);
+        gridPane.add(phoneField, 1, 3);
+
+        gridPane.add(ageLabel, 0, 4);
+        gridPane.add(ageField, 1, 4);
+
+        // Create a sub-GridPane for the buttons to align them horizontally
+        GridPane buttonPane = new GridPane();
+        buttonPane.setHgap(20);
+        buttonPane.setAlignment(Pos.CENTER);
+        buttonPane.add(saveButton, 0, 0);
+        buttonPane.add(cancelButton, 1, 0);
+
+        // Add the button pane to the main grid
+        gridPane.add(buttonPane, 0, 5, 2, 1);
+
+        // Add the GridPane to the root Pane
+        getChildren().add(gridPane);
+    }
+
+    // Method to add numeric input validation
+    private void addNumericValidation(TextField textField) {
+        textField.addEventFilter(KeyEvent.KEY_TYPED, event -> {
+            String input = event.getCharacter();
+            // Allow only digits
+            if (!input.matches("\\d")) {
+                event.consume(); // Ignore non-digit input
+            }
+        });
     }
 }
