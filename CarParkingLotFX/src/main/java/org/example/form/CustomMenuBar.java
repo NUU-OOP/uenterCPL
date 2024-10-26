@@ -1,9 +1,11 @@
 package org.example.form;
 
+import javafx.scene.Scene;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.stage.Stage;
+import org.example.AttendantForm;
 import org.example.EntranceForm;
 
 public class CustomMenuBar {
@@ -61,8 +63,20 @@ public class CustomMenuBar {
         MenuItem addAttendant = new MenuItem("Add Attendant");
 
         // Add actions for Personnel Management items
-        addMember.setOnAction(e -> System.out.println("Add Member selected"));
-        addAttendant.setOnAction(e -> System.out.println("Add Attendant selected"));
+        addMember.setOnAction(e ->
+        {
+            UserInputForm userInputForm=new UserInputForm();
+            userInputForm.start(new Stage());
+            //System.out.println("Add Member selected");
+        });
+        addAttendant.setOnAction(e -> {
+            AttendantForm attendantForm=new AttendantForm();
+            try {
+                attendantForm.start(new Stage());
+            } catch (Exception ex) {
+                throw new RuntimeException(ex);
+            }
+        });
 
         personnelMenu.getItems().addAll(addMember, addAttendant);
 

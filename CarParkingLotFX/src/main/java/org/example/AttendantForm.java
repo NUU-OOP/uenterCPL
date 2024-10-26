@@ -1,7 +1,9 @@
 package org.example;
 
+import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
@@ -12,17 +14,12 @@ import javafx.scene.layout.Pane;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
+import javafx.stage.Stage;
 
-public class AttendantForm extends Pane {
-
-    public AttendantForm() {
-        create();
-    }
-
-    protected void create() {
-        getChildren().clear();
-
-        // Create a GridPane for layout
+public class AttendantForm extends Application {
+    @Override
+    public void start(Stage stage) throws Exception {
+        stage.setTitle("Attendant");
         GridPane gridPane = new GridPane();
         gridPane.setAlignment(Pos.CENTER);
         gridPane.setHgap(10);
@@ -98,10 +95,11 @@ public class AttendantForm extends Pane {
 
         // Add the button pane to the main grid
         gridPane.add(buttonPane, 0, 5, 2, 1);
-
-        // Add the GridPane to the root Pane
-        getChildren().add(gridPane);
+        Scene scene=new Scene(gridPane,430,400);
+        stage.setScene(scene);
+        stage.show();
     }
+
 
     // Method to add numeric input validation
     private void addNumericValidation(TextField textField) {
