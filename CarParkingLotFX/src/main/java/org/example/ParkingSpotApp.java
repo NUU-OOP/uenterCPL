@@ -72,7 +72,7 @@ public class ParkingSpotApp extends Application {
                 }
             }
         }
-
+//Hikmatilla uchun
         // Create an instance of DisplayBoard using the fetched values
         DisplayBoard displayBoard = new DisplayBoard(
                 evFilled, evTotal,
