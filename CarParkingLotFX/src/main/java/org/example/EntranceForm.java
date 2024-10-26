@@ -98,7 +98,9 @@ public class EntranceForm extends Application {
                 ResultSet rs = null;
                 try {
                     dbcon = new DBConnection();
-                    rs = dbcon.executeQuery("INSERT INTO Ticket(TicketID, SpotID, CarNumber, CarType, EnterTime, ExitTime, ExtraFee) VALUES(null,null,CarNumber, CarType, enterTime, exitTime, extraFee);");
+
+                    dbcon.executeCommand("INSERT INTO Ticket (SpotID, CarNumber, CarType, EnterTime, ExitTime, ExtraFee)" +
+                            "VALUES (1, '"+carNumberField.getText()+"', '"+carTypeComboBox.getValue().toString()+"', '"+LocalDateTime.now()+"', '', '5.00');");
                 } catch (SQLException ex) {
                     throw new RuntimeException(ex);
                 }
