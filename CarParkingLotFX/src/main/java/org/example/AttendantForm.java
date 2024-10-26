@@ -4,10 +4,7 @@ import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
@@ -75,7 +72,19 @@ public class AttendantForm extends Application {
         Button saveButton = new Button("SAVE");
         saveButton.setFont(font);
         saveButton.setPrefSize(180, 50);
-        saveButton.setOnAction(e->insetTable(nameField.getText(),loginField.getText(),passwordField.getText(),phoneField.getText(),ageField.getText()));
+        saveButton.setOnAction(e->{
+            if (nameField.getText().isEmpty() || loginField.getText().isEmpty() || passwordField.getText().isEmpty() || phoneField.getText().isEmpty()) {
+                showAlert("Missing Information", "Please enter name,login,password and phone.");
+            }else {
+                insetTable(nameField.getText(), loginField.getText(), passwordField.getText(), phoneField.getText(), ageField.getText());
+                nameField.setText(null);
+                loginField.setText(null);
+                passwordField.setText(null);
+                phoneField.setText(null);
+                ageField.setText(null);
+            }
+
+        });
         Button cancelButton = new Button("CANCEL");
         cancelButton.setFont(font);
         cancelButton.setPrefSize(180, 50);
@@ -137,5 +146,12 @@ public class AttendantForm extends Application {
             throw new RuntimeException(e);
         }
 
+    }
+    private void showAlert(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 }
