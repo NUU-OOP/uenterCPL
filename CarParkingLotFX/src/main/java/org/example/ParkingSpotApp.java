@@ -19,6 +19,7 @@ import org.example.form.DisplayBoard;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,7 +31,56 @@ public class ParkingSpotApp extends Application {
         primaryStage.setTitle("First floor");
         Button center = new Button("Center");
         VBox topVboxwithMenu = new VBox(10);
-        DisplayBoard displayBoard = new DisplayBoard(10,100,80,100,23,25,10,15,23,25);
+        int evFilled = 0, evTotal = 0;
+        int handicappedFilled = 0, handicappedTotal = 0;
+        int compactFilled = 0, compactTotal = 0;
+        int largeFilled = 0, largeTotal = 0;
+        int motorcycleFilled = 0, motorcycleTotal = 0;
+
+        String query = "SELECT SpotType, COUNT(*) AS TotalSpots, " +
+                "SUM(CASE WHEN isOccupied = 1 THEN 1 ELSE 0 END) AS OccupiedSpots " +
+                "FROM Spot GROUP BY SpotType";
+
+        try (Statement stmt = dbcon.getConnection().createStatement();
+             ResultSet rs = stmt.executeQuery(query)) {
+            while (rs.next()) {
+                String spotType = rs.getString("SpotType");
+                int totalSpots = rs.getInt("TotalSpots");
+                int occupiedSpots = rs.getInt("OccupiedSpots");
+
+                switch (spotType) {
+                    case "ELECTRIC":
+                        evTotal = totalSpots;
+                        evFilled = occupiedSpots;
+                        break;
+                    case "HANDICAPPED":
+                        handicappedTotal = totalSpots;
+                        handicappedFilled = occupiedSpots;
+                        break;
+                    case "COMPACT":
+                        compactTotal = totalSpots;
+                        compactFilled = occupiedSpots;
+                        break;
+                    case "LARGE":
+                        largeTotal = totalSpots;
+                        largeFilled = occupiedSpots;
+                        break;
+                    case "MOTORCYCLE":
+                        motorcycleTotal = totalSpots;
+                        motorcycleFilled = occupiedSpots;
+                        break;
+                }
+            }
+        }
+
+        // Create an instance of DisplayBoard using the fetched values
+        DisplayBoard displayBoard = new DisplayBoard(
+                evFilled, evTotal,
+                handicappedFilled, handicappedTotal,
+                compactFilled, compactTotal,
+                largeFilled, largeTotal,
+                motorcycleFilled, motorcycleTotal
+        );
         CustomMenuBar menuBars = new CustomMenuBar(primaryStage);
         MenuBar menuBar = menuBars.createMenuBar();
 //
@@ -45,28 +95,35 @@ public class ParkingSpotApp extends Application {
         // Create and add CarSpot instances
         List<Spots> carCollections = new ArrayList<>();
 
-        ResultSet rs = dbcon.executeQuery("SELECT * FROM Spot WHERE SpotType IN ('CAR', 'EVCAR', 'HANDICAPPED') ORDER BY SpotNumber;");
+        ResultSet rs = dbcon.executeQuery("SELECT * FROM Spot WHERE SpotType IN ('COMPACT', 'ELECTRIC', 'HANDICAPPED') ORDER BY SpotNumber;");
+        while (rs.next()) {
 
-
-        while (rs.next()){
-
-            if (rs.getString(2).equals(SpotType.HANDICAPPED.toString())){
+            if (rs.getString(2).equals(SpotType.HANDICAPPED.toString())) {
                 HandicappedSpot h = new HandicappedSpot();
-                if (rs.getString(4).equals("1")){
+                if (rs.getString(4).equals("1")) {
                     h.setColor(Color.RED);
                 }
                 carCollections.add(h);
             }
-            if (rs.getString(2).equals(SpotType.ELECTRIC.toString())){
-                carCollections.add(new EvCarSpot());
-            }
-            if (rs.getString(2).equals(SpotType.COMPACT.toString())){
-                carCollections.add(new CarSpot());
-            }
+            if (rs.getString(2).equals(SpotType.ELECTRIC.toString())) {
+                EvCarSpot evCarSpot = new EvCarSpot();
+                if (rs.getString(4).equals("1")) {
+                    evCarSpot.setColor(Color.RED);
+                }
+                carCollections.add(evCarSpot);
 
+            }
+            if (rs.getString(2).equals(SpotType.COMPACT.toString())) {
+                CarSpot compactSpot = new CarSpot();
+                if (rs.getString(4).equals("1")) {
+                    compactSpot.setColor(Color.RED);
+                }
+                carCollections.add(compactSpot);
+
+            }
         }
         tilePane.getChildren().addAll(carCollections);
-        topVboxwithMenu.getChildren().addAll(menuBar,tilePane);
+        topVboxwithMenu.getChildren().addAll(menuBar, tilePane);
 
         // Create an HBox for TruckSpot objects
         HBox hbox = new HBox(10); // 10 is the spacing between each spot
@@ -78,26 +135,33 @@ public class ParkingSpotApp extends Application {
         // Create and add BikeSpot instances to VBox
         List<Spots> bikeCollections = new ArrayList<>();
 
-        ResultSet rsBike = dbcon.executeQuery("SELECT * FROM Spot WHERE SpotType IN ('BIKE') ORDER BY SpotNumber;");
+        ResultSet rsBike = dbcon.executeQuery("SELECT * FROM Spot WHERE SpotType IN ('MOTORCYCLE') ORDER BY SpotNumber;");
         while (rsBike.next()) {
-
-            if (rsBike.getString(2).equals(SpotType.MOTORBIKE.toString())) {
-//                BikeSpot bikeSpot = new BikeSpot();
-//                bikeSpot.setRotate(90);
-//                bikeCollections.add(bikeSpot);
-
+            BikeSpot bikeSpot = new BikeSpot("a");
+            bikeSpot.setRotate(90);
+            if (rsBike.getString(4).equals("1")){
+                bikeSpot.setColor(Color.RED);
 
             }
+            bikeCollections.add(bikeSpot);
+
         }
+
         // Add BikeSpots to the VBox
         bikeBox.getChildren().addAll(bikeCollections);
+
         //Truck spot added
         HBox truckBox = new HBox(10);
 
         List<Spots> truckCollections = new ArrayList<>();
-        ResultSet rsT = dbcon.executeQuery("SELECT * FROM Spot WHERE SpotType IN ('TRUCK') ORDER BY SpotNumber;");
+        ResultSet rsT = dbcon.executeQuery("SELECT * FROM Spot WHERE SpotType IN ('LARGE') ORDER BY SpotNumber;");
+
         while (rsT.next()){
-                truckCollections.add(new TruckSpot());
+            TruckSpot truckSpot = new TruckSpot();
+            if (rsT.getString(4).equals("1")) {
+                truckSpot.setColor(Color.RED);
+            }
+            truckCollections.add(truckSpot);
         }
 
         //Entrance gate
@@ -115,7 +179,7 @@ public class ParkingSpotApp extends Application {
         exitBox.getChildren().addAll(exit1, exit2);
         truckBox.getChildren().addAll(truckCollections);
         HBox bottomContainer = new HBox(50);
-        bottomContainer.getChildren().addAll(truckBox, exitBox);
+        bottomContainer.getChildren().addAll( truckBox, exitBox);
         borderPane.setPadding(new Insets(10,10,10,10));
         // Set the VBox at the bottom of the BorderPane
         borderPane.setBottom(bottomContainer);

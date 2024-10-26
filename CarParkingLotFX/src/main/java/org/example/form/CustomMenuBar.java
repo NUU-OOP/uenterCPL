@@ -10,6 +10,8 @@ import org.example.AttendantForm;
 import org.example.EntranceForm;
 import org.example.form.InteractiveDisplay;
 
+import java.sql.SQLException;
+
 public class CustomMenuBar {
     private Stage stage;
     public CustomMenuBar(Stage stage){
@@ -92,7 +94,12 @@ public class CustomMenuBar {
             //System.out.println("Add Member selected");
         });
         addAttendant.setOnAction(e -> {
-            AttendantForm attendantForm=new AttendantForm();
+            AttendantForm attendantForm= null;
+            try {
+                attendantForm = new AttendantForm();
+            } catch (SQLException ex) {
+                throw new RuntimeException(ex);
+            }
             try {
                 attendantForm.start(new Stage());
             } catch (Exception ex) {

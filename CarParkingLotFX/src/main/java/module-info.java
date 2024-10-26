@@ -7,6 +7,6 @@ module CarParkingLotFX {
     opens org.example.form;
     opens org.example.spots;
     opens org.example;
-    opens org.example.rate;
+
 
 }

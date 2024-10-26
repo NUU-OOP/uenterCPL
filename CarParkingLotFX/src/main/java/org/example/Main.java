@@ -23,9 +23,10 @@ public class Main extends Application {
     public static final String DB_URL = "jdbc:sqlite:university.db";
     @Override
     public void start(Stage primaryStage) throws Exception {
-        //EntranceForm paymentForm = new EntranceForm();
-//        Scene scene = new Scene(paymentForm);
-//        primaryStage.setScene(scene);
+        Receipt receipt = new Receipt();
+
+        Scene scene = new Scene(receipt);
+        primaryStage.setScene(scene);
         primaryStage.show();
     }
 

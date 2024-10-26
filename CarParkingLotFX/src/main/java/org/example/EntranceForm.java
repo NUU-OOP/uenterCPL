@@ -82,7 +82,7 @@ public class EntranceForm extends Application {
 
         // Add the GridPane to this Pane
 //        this.getChildren().add(gridPane);
-        Scene scene = new Scene(gridPane, 200,300);
+        Scene scene = new Scene(gridPane, 400,300);
         primaryStage.setScene(scene);
         primaryStage.show();
     }

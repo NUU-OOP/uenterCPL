@@ -30,7 +30,7 @@ public class DisplayBoard extends GridPane {
 
         // Row 0: Total Spots
         Label totalSpotsLabel = new Label("Total Spots:");
-        Label totalSpotsValue = new Label("100"); // Example total spots
+        Label totalSpotsValue = new Label(evTotal+handicappedTotal+compactTotal+largeTotal+motorcycleTotal+""); // Example total spots
 
         // Row 1: EV Spots
         Label evSpotsLabel = new Label("EV Spots:");

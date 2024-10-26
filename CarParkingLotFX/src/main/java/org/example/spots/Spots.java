@@ -16,7 +16,7 @@ import java.util.List;
 
 public abstract class Spots extends Pane{
     protected Rectangle rectangle = new Rectangle();
-    private  String ID;
+
     public Spots(int width, int height, String ID){
         rectangle.setStroke(Color.BLUE);
         rectangle.setFill(Color.WHITE);
@@ -28,7 +28,7 @@ public abstract class Spots extends Pane{
         rectangle.setOnMouseClicked(event -> {
             rectangle.setStroke(Color.RED);
         });
-        this.ID = ID;
+
     }
     public void setColor(Color color){
         this.rectangle.setStroke(color);
