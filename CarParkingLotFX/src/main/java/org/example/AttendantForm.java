@@ -15,8 +15,18 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
+import org.example.dbconnnection.DBConnection;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 
 public class AttendantForm extends Application {
+    DBConnection dbcon=new DBConnection();
+    private Connection conn= dbcon.getConnection();
+    public AttendantForm() throws SQLException {
+    }
+
     @Override
     public void start(Stage stage) throws Exception {
         stage.setTitle("Attendant");
@@ -65,11 +75,13 @@ public class AttendantForm extends Application {
         Button saveButton = new Button("SAVE");
         saveButton.setFont(font);
         saveButton.setPrefSize(180, 50);
-
+        saveButton.setOnAction(e->insetTable(nameField.getText(),loginField.getText(),passwordField.getText(),phoneField.getText(),ageField.getText()));
         Button cancelButton = new Button("CANCEL");
         cancelButton.setFont(font);
         cancelButton.setPrefSize(180, 50);
-
+        cancelButton.setOnAction(e->{
+            System.exit(0);
+        });
         // Add components to the GridPane (row, column)
         gridPane.add(nameLabel, 0, 0);
         gridPane.add(nameField, 1, 0);
@@ -110,5 +122,20 @@ public class AttendantForm extends Application {
                 event.consume(); // Ignore non-digit input
             }
         });
+    }
+    private void insetTable(String name,String login,String password,String phone,String age){
+        String sql="INSERT INTO Attendant(name,phone,age,login,password,gate) VALUES(?,?,?,?,?,?);";
+        try(PreparedStatement pstmt=conn.prepareStatement(sql)){
+            pstmt.setString(1,name);
+            pstmt.setInt(2,Integer.parseInt(phone));
+            pstmt.setInt(3,Integer.parseInt(age));
+            pstmt.setString(4,login);
+            pstmt.setString(5,password);
+            pstmt.setInt(6,1);
+            pstmt.execute();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 }
