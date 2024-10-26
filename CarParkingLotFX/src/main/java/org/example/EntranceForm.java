@@ -9,6 +9,11 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import org.example.dbconnnection.DBConnection;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.time.LocalDateTime;
 
 public class EntranceForm extends Application {
 
@@ -79,6 +84,27 @@ public class EntranceForm extends Application {
         gridPane.add(extraServiceCheckBox, 1, 2);
 
         gridPane.add(buttonBox, 0, 3, 2, 1); // Span across 2 columns
+
+//      DB Connection
+        parkButton.setOnAction(event -> {
+            if (carNumberField != null || carTypeComboBox != null ) {
+                String CarNumber = carNumberField.getText();
+                String CarType = carTypeComboBox.getTypeSelector();
+                LocalDateTime enterTime = LocalDateTime.now(); // Assuming you want to use the current time for EnterTime
+                LocalDateTime exitTime = null; // Assuming ExitTime is null initially
+                double extraFee = 0.0;
+
+                DBConnection dbcon = null;
+                ResultSet rs = null;
+                try {
+                    dbcon = new DBConnection();
+                    rs = dbcon.executeQuery("INSERT INTO Ticket(TicketID, SpotID, CarNumber, CarType, EnterTime, ExitTime, ExtraFee) VALUES(null,null,CarNumber, CarType, enterTime, exitTime, extraFee);");
+                } catch (SQLException ex) {
+                    throw new RuntimeException(ex);
+                }
+            }
+        });
+
 
         // Add the GridPane to this Pane
 //        this.getChildren().add(gridPane);
