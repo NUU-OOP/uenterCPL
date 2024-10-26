@@ -4,14 +4,17 @@ import javafx.scene.Scene;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
+import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import org.example.AttendantForm;
 import org.example.EntranceForm;
+import org.example.form.InteractiveDisplay;
 
 public class CustomMenuBar {
     private Stage stage;
     public CustomMenuBar(Stage stage){
         this.stage = stage;
+
     }
 
 
@@ -27,11 +30,30 @@ public class CustomMenuBar {
         // Add actions for Car Management items
         enterNewCar.setOnAction(
                 event -> {
-                    EntranceForm entranceForm = new EntranceForm(this.stage);
+                    EntranceForm entranceForm = new EntranceForm();
+                    try {
+                        entranceForm.start(new Stage());
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
+
 
                 }
         );
-        exitCar.setOnAction(e -> System.out.println("Exit Car selected"));
+
+        exitCar.setOnAction(e ->
+
+        {
+
+             InteractiveDisplay ShowInteractiveDisplay = new InteractiveDisplay();
+             try {
+                 ShowInteractiveDisplay.start(new Stage());
+             } catch (Exception ex) {
+                 throw new RuntimeException(ex);
+             }
+        });
+
+//           System.out.println("Exit Car selected"));
 
         carMenu.getItems().addAll(enterNewCar, exitCar);
 

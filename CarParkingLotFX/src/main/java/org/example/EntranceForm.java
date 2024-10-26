@@ -1,16 +1,23 @@
 package org.example;
 
+import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
-public class EntranceForm extends Pane {
+public class EntranceForm extends Application {
 
-    public EntranceForm(Stage stage) {
+    public void EntranceForm(Stage stage) {
+
+    }
+
+    @Override
+    public void start(Stage primaryStage) throws Exception {
         // Create a GridPane for layout
         GridPane gridPane = new GridPane();
         gridPane.setAlignment(Pos.CENTER);
@@ -35,7 +42,7 @@ public class EntranceForm extends Pane {
         Label carTypeLabel = new Label("CAR TYPE:");
         ComboBox<SpotType> carTypeComboBox = new ComboBox<>();
         carTypeComboBox.getItems().addAll(
-               SpotType.values()
+                SpotType.values()
         );
 
 
@@ -74,6 +81,9 @@ public class EntranceForm extends Pane {
         gridPane.add(buttonBox, 0, 3, 2, 1); // Span across 2 columns
 
         // Add the GridPane to this Pane
-        this.getChildren().add(gridPane);
+//        this.getChildren().add(gridPane);
+        Scene scene = new Scene(gridPane, 200,300);
+        primaryStage.setScene(scene);
+        primaryStage.show();
     }
 }
