@@ -8,11 +8,13 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import org.example.AttendantForm;
 import org.example.EntranceForm;
+import org.example.form.InteractiveDisplay;
 
 public class CustomMenuBar {
     private Stage stage;
     public CustomMenuBar(Stage stage){
         this.stage = stage;
+
     }
 
 
@@ -35,9 +37,23 @@ public class CustomMenuBar {
                         throw new RuntimeException(e);
                     }
 
+
                 }
         );
-        exitCar.setOnAction(e -> System.out.println("Exit Car selected"));
+
+        exitCar.setOnAction(e ->
+
+        {
+
+             InteractiveDisplay ShowInteractiveDisplay = new InteractiveDisplay();
+             try {
+                 ShowInteractiveDisplay.start(new Stage());
+             } catch (Exception ex) {
+                 throw new RuntimeException(ex);
+             }
+        });
+
+//           System.out.println("Exit Car selected"));
 
         carMenu.getItems().addAll(enterNewCar, exitCar);
 
