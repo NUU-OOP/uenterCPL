@@ -19,7 +19,7 @@ public class BikeSpot extends Spots {
         Text text = new Text("BIKE");
         text.setFont(Font.font("Verdana", FontPosture.ITALIC, 12)); // Set font to Italic and size 20
         text.setFill(Color.GREEN);  // Set the text color to green
-        text.setRotate(90);
+        text.setRotate(270);
         // Create the rectangle for the bike spot
 
         rectangle.setArcWidth(10); // Rounded corners
