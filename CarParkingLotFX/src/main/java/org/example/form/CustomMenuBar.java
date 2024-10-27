@@ -5,6 +5,7 @@ import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import org.example.AttendantForm;
 import org.example.EntranceForm;
@@ -12,10 +13,11 @@ import org.example.form.InteractiveDisplay;
 
 import java.sql.SQLException;
 
-public class CustomMenuBar {
-    private Stage stage;
-    public CustomMenuBar(Stage stage){
-        this.stage = stage;
+public class CustomMenuBar extends Pane {
+    //private Stage stage;
+    public CustomMenuBar(){
+      //  this.stage = stage;
+        createMenuBar();
 
     }
 
@@ -67,6 +69,12 @@ public class CustomMenuBar {
         Menu selectFloor = new Menu("Select Floor");
         MenuItem firstFloor = new MenuItem("First Floor");
         MenuItem secondFloor = new MenuItem("Second Floor");
+        secondFloor.setOnAction(event -> {
+            System.out.println("SECOND ");
+            SecondFloor secondFloor1 = new SecondFloor();
+
+
+        });
         selectFloor.getItems().addAll(firstFloor, secondFloor);
         // Add actions for Spot Management items
         changeRate.setOnAction(

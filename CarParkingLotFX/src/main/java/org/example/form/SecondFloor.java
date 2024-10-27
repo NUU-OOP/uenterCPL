@@ -1,7 +1,9 @@
 package org.example.form;
 
+import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 import org.example.spots.CarSpot;
 
 public class SecondFloor extends BorderPane {
@@ -10,7 +12,8 @@ public class SecondFloor extends BorderPane {
     }
     private void creatFloorWithData(){
         VBox vBox = new VBox();
-        CarSpot carSpot = new CarSpot();
-        this.getChildren().addAll(carSpot);
+        CustomMenuBar customMenuBar = new CustomMenuBar();
+        Button button = new Button("OK");
+        this.getChildren().addAll( button, customMenuBar);
     }
 }
