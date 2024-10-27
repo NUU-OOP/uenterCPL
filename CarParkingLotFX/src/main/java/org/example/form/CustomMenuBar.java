@@ -95,8 +95,8 @@ public class CustomMenuBar extends Pane {
         // Add actions for Spot Management items
         changeRate.setOnAction(
                 event -> {
-                    ParkingRateConfigurator parkingRateConfigurator = new ParkingRateConfigurator();
-                    parkingRateConfigurator.start(new Stage());
+//                    ParkingRateConfigurator parkingRateConfigurator = new ParkingRateConfigurator();
+//                    parkingRateConfigurator.start(new Stage());
 
                 }
         );

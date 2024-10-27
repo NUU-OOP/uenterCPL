@@ -98,7 +98,7 @@ public class AddSpot extends Application {
 //        try (Connection conn = DriverManager.getConnection(url, user, password)) {
 //            String sql = "INSERT INTO ParkingSpots (SpotType, SpotNumber, FloorNumber) VALUES (?, ?, ?)";
 //            PreparedStatement statement = conn.prepareStatement(sql);
-////            statement.setString(1, spotType);
+////          statement.setString(1, spotType);
 //            statement.setString(2, spotNumber);
 //            statement.setString(3, floorNumber);
 //
