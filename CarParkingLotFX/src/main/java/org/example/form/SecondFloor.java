@@ -12,8 +12,8 @@ public class SecondFloor extends BorderPane {
     }
     private void creatFloorWithData(){
         VBox vBox = new VBox();
-        CustomMenuBar customMenuBar = new CustomMenuBar();
+        //CustomMenuBar customMenuBar = new CustomMenuBar();
         Button button = new Button("OK");
-        this.getChildren().addAll( button, customMenuBar);
+        ///this.getChildren().addAll( button, customMenuBar);
     }
 }
