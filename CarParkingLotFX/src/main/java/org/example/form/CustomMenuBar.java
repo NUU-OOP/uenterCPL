@@ -9,7 +9,6 @@ import javafx.stage.Stage;
 import org.example.AttendantForm;
 import org.example.EntranceForm;
 import org.example.form.InteractiveDisplay;
-import org.example.spots.changeSpotType;
 
 import java.sql.SQLException;
 
@@ -74,22 +73,11 @@ public class CustomMenuBar {
                 event -> {
                     ParkingRateConfigurator parkingRateConfigurator = new ParkingRateConfigurator();
                     parkingRateConfigurator.start(new Stage());
+
                 }
         );
         addSpot.setOnAction(e -> System.out.println("Add Spot selected"));
-        changeSpotType.setOnAction(e -> {
-            changeSpotType changeSpot= null;
-            try {
-                changeSpot = new changeSpotType();
-            } catch (SQLException ex) {
-                throw new RuntimeException(ex);
-            }
-            try {
-                changeSpot.start(new Stage());
-            } catch (Exception ex) {
-                throw new RuntimeException(ex);
-            }
-        });
+        changeSpotType.setOnAction(e -> System.out.println("Change Spot Type selected"));
 
         spotMenu.getItems().addAll(changeRate, addSpot, changeSpotType);
 
