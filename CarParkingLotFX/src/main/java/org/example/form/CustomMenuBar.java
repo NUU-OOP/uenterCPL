@@ -69,10 +69,10 @@ public class CustomMenuBar {
         MenuItem secondFloor = new MenuItem("Second Floor");
         selectFloor.getItems().addAll(firstFloor, secondFloor);
         // Add actions for Spot Management items
-        changeRate.setOnAction(
+        changeRate.setOnAction( 
                 event -> {
-                    ParkingRateConfigurator parkingRateConfigurator = new ParkingRateConfigurator();
-                    parkingRateConfigurator.start(new Stage());
+//                    ParkingRateConfigurator parkingRateConfigurator = new ParkingRateConfigurator();
+//                    parkingRateConfigurator.start(new Stage());
 
                 }
         );
