@@ -5,6 +5,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.effect.Light;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -85,33 +86,60 @@ public class EntranceForm extends Application {
 
         gridPane.add(buttonBox, 0, 3, 2, 1); // Span across 2 columns
 
-//      DB Connection
+
+
+        // DB Connection
         parkButton.setOnAction(event -> {
             if (carNumberField != null || carTypeComboBox != null ) {
                 String CarNumber = carNumberField.getText();
-                String CarType = carTypeComboBox.getTypeSelector();
+                String CarType = carTypeComboBox.getValue().toString();
                 LocalDateTime enterTime = LocalDateTime.now(); // Assuming you want to use the current time for EnterTime
-                LocalDateTime exitTime = null; // Assuming ExitTime is null initially
-                double extraFee = 0.0;
+//                LocalDateTime exitTime = null; // Assuming ExitTime is null initially
+                boolean extraFee = false;
+                
+
+                // Checking extraFee for EVcars to adding boolean info to Ticket table in hello.db
+                if (extraServiceCheckBox.isSelected()){
+                    extraFee = true;
+                } else {
+                    extraFee = false;
+                };
 
                 DBConnection dbcon = null;
                 ResultSet rs = null;
                 try {
                     dbcon = new DBConnection();
-
                     dbcon.executeCommand("INSERT INTO Ticket (SpotID, CarNumber, CarType, EnterTime, ExitTime, ExtraFee)" +
-                            "VALUES (1, '"+carNumberField.getText()+"', '"+carTypeComboBox.getValue().toString()+"', '"+LocalDateTime.now()+"', '', '5.00');");
+                            "VALUES ('"+freeSpotID(CarType)+"', '"+CarNumber+"', '"+CarType+"', '"+enterTime+"', '', '"+extraFee+"');");
+
                 } catch (SQLException ex) {
                     throw new RuntimeException(ex);
                 }
+
             }
         });
-
-
         // Add the GridPane to this Pane
 //        this.getChildren().add(gridPane);
         Scene scene = new Scene(gridPane, 400,300);
         primaryStage.setScene(scene);
         primaryStage.show();
+    }
+    // Checking free spots in Spot table in hello.db
+    private static int freeSpotID(String carTypeComboBoxvalue){
+        DBConnection dbcon = null;
+        ResultSet rs = null;
+        try {
+            dbcon = new DBConnection();
+            rs = dbcon.executeQuery("SELECT * FROM Spot  WHERE isOccupied = '0' AND SpotType = '" + carTypeComboBoxvalue + "' ORDER BY SpotID LIMIT 1;");
+            if (rs.next()) {
+                int spotId = rs.getInt("SpotID");
+                System.out.println("Available Spot ID: " + spotId);
+                return spotId;
+            } else System.out.println("No available spots found.");
+            return 0;
+        }
+        catch (SQLException ex) {
+            throw new RuntimeException(ex);
+        }
     }
 }
