@@ -100,9 +100,10 @@ public class UserInputForm extends Application {
                     nameInput.clear();
                     phoneInput.clear();
                     carNumberInput.clear();
+                    showAlert("Successfully","the information you entered has been saved to the database");
             }
         });
-        cancelButton.setOnAction(e->System.exit(0));
+        cancelButton.setOnAction(e->primaryStage.close());
         // Add buttons to HBox
         buttonBox.getChildren().addAll(saveButton, cancelButton);
 
@@ -129,6 +130,7 @@ public class UserInputForm extends Application {
             pstmt.setString(3,carNumber);
             pstmt.setString(4,carType);
             pstmt.execute();
+
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

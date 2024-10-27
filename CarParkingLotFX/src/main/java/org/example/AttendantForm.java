@@ -84,7 +84,7 @@ public class AttendantForm extends Application {
                     passwordField.clear();
                     phoneField.clear();
                     ageField.clear();
-
+                    showAlert("Successfully","the information you entered has been saved to the database");
                 } catch (Exception exception){
                     showAlert("Same login info", "Same log info");
                 }
@@ -95,7 +95,7 @@ public class AttendantForm extends Application {
         cancelButton.setFont(font);
         cancelButton.setPrefSize(180, 50);
         cancelButton.setOnAction(e->{
-            System.exit(0);
+            stage.close();
         });
         // Add components to the GridPane (row, column)
         gridPane.add(nameLabel, 0, 0);
