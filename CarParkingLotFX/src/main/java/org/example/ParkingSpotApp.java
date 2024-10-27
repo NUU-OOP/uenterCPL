@@ -24,11 +24,27 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ParkingSpotApp extends Application {
+    private BorderPane borderPane;
 
     @Override
     public void start(Stage primaryStage) throws SQLException {
-        DBConnection dbcon = new DBConnection();
+        borderPane = new BorderPane();
+        showFirstFloor();
+        // Create a scene with the BorderPane as the root
+        Scene scene = new Scene(borderPane, 900, 600);
         primaryStage.setTitle("First floor");
+
+        // Set the scene and show the stage
+        primaryStage.setScene(scene);
+        primaryStage.show();
+    }
+
+    public static void main(String[] args) {
+        launch(args); // Launch the application
+    }
+    private void showFirstFloor() throws SQLException {
+        DBConnection dbcon = new DBConnection();
+
         Button center = new Button("Center");
         VBox topVboxwithMenu = new VBox(10);
         int evFilled = 0, evTotal = 0;
@@ -81,11 +97,11 @@ public class ParkingSpotApp extends Application {
                 largeFilled, largeTotal,
                 motorcycleFilled, motorcycleTotal
         );
-        CustomMenuBar menuBars = new CustomMenuBar(primaryStage);
+        CustomMenuBar menuBars = new CustomMenuBar();
         MenuBar menuBar = menuBars.createMenuBar();
 //
         // Create a BorderPane as the root layout
-        BorderPane borderPane = new BorderPane();
+
 
         // Create a TilePane for CarSpot, EvCarSpot, and HandicappedSpot
         TilePane tilePane = new TilePane();
@@ -190,15 +206,5 @@ public class ParkingSpotApp extends Application {
         borderPane.setCenter(displayBoard);
 
 
-        // Create a scene with the BorderPane as the root
-        Scene scene = new Scene(borderPane, 900, 600);
-
-        // Set the scene and show the stage
-        primaryStage.setScene(scene);
-        primaryStage.show();
-    }
-
-    public static void main(String[] args) {
-        launch(args); // Launch the application
     }
 }
