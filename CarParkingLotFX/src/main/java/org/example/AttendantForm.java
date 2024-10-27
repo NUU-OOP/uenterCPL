@@ -88,10 +88,6 @@ public class AttendantForm extends Application {
                 } catch (Exception exception){
                     showAlert("Same login info", "Same log info");
                 }
-
-
-
-
             }
 
         });
