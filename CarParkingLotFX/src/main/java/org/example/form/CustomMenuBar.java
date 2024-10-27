@@ -76,7 +76,19 @@ public class CustomMenuBar {
 
                 }
         );
-        addSpot.setOnAction(e -> System.out.println("Add Spot selected"));
+        addSpot.setOnAction(e -> {
+            AddSpot addSpotDefault= null;
+            try {
+                addSpotDefault = new AddSpot();
+            } catch (SQLException ex) {
+                throw new RuntimeException(ex);
+            }
+            try {
+                addSpotDefault.start(new Stage());
+            } catch (Exception ex) {
+                throw new RuntimeException(ex);
+            }
+        });
         changeSpotType.setOnAction(e -> System.out.println("Change Spot Type selected"));
 
         spotMenu.getItems().addAll(changeRate, addSpot, changeSpotType);
