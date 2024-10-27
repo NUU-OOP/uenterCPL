@@ -30,7 +30,7 @@ public class ParkingSpotApp extends Application {
         root.setTop(customMenuBar.createMenuBar());
 
         //borderPane = new BorderPane();
-        showFirstFloor();
+
         // Create a scene with the BorderPane as the root
         Scene scene = new Scene(root, 900, 600);
         primaryStage.setTitle("First floor");
@@ -44,9 +44,5 @@ public class ParkingSpotApp extends Application {
     public static void main(String[] args) {
         launch(args); // Launch the application
     }
-    private void showFirstFloor() throws SQLException {
 
-
-
-    }
 }

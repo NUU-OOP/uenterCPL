@@ -40,7 +40,9 @@ public class AddSpot extends Application {
         Label floorNumberLabel = new Label("Floor Number:");
 
         Button saveButton = new Button("Add Spot");
-        saveButton.setOnAction(e -> {if (spotTypeField.getValue()==null || spotNumberField.getText().isEmpty() || floorNumberField.getText().isEmpty()) {
+        saveButton.setOnAction(e -> {
+            if (spotTypeField.getValue()==null || spotNumberField.getText().isEmpty() || floorNumberField.getText().isEmpty())
+            {
             showAlert("Missing Information", "Please enter name,login,password and phone.");
         }else{
             try {
@@ -48,7 +50,7 @@ public class AddSpot extends Application {
             } catch (SQLException ex) {
                 throw new RuntimeException(ex);
             }
-            spotTypeField = null;
+            spotTypeField.setValue(SpotType.COMPACT);
             spotNumberField.clear();
             floorNumberField.clear();
         }
