@@ -15,6 +15,7 @@ Main.java
 *.db
 *.class
 *.xml
+
 *.gitignore
 ### Eclipse ###
 .apt_generated
