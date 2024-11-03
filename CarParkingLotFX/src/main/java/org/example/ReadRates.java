@@ -9,7 +9,7 @@ public class ReadRates {
 
 
     public String readRates() throws FileNotFoundException {
-        File file = new File("C:\\Users\\USER\\Desktop\\CarParkingLot\\CarParkingLotFX\\src\\main\\resources\\rates.ini\\");
+        File file = new File(getClass().getResource("/rates.ini").getPath());
             Scanner scanner = new Scanner(file);
             String rates = scanner.nextLine();
 
