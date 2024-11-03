@@ -28,6 +28,7 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class InteractiveDisplay extends Application {
@@ -118,7 +119,13 @@ public class InteractiveDisplay extends Application {
             detailsBox, 
             buttonBox
         );
+        cancelButton.setOnAction(event -> {
 
+            detailCarNumberLabel.setText("Car Number:");
+            enteringTimeLabel.setText("Entering time:");
+            chargingFeeLabel.setText("Charging fee:");
+            totalPaymentLabel.setText("Total payment:");
+        });
         searchButton.setOnAction(e -> {
                     DBConnection dbcon = null;
                     try {
@@ -128,6 +135,8 @@ public class InteractiveDisplay extends Application {
                     }
                     double total=0.0;
                     double chargingFee=0.0;
+                    String exitTime = "";
+
                     String carNumber = carNumberInput.getText().trim();
                     if (!carNumber.isEmpty()) {
                         ResultSet rs = null;
@@ -137,8 +146,8 @@ public class InteractiveDisplay extends Application {
                                 if (rs.getString(3).equals(carNumber)) {
                                     detailCarNumberLabel.setText(detailCarNumberLabel.getText()+"     "+rs.getString(3));  // Add Car Number label
                                     enteringTimeLabel.setText(enteringTimeLabel.getText()+"   "+formatDateTime(rs.getString(5)));
-
-                                    long seconds = TimeDifference(rs.getString(5), getCurrentTime());
+                                    exitTime = getCurrentTime();
+                                    long seconds = TimeDifference(rs.getString(5), exitTime);
                                     if (rs.getString(7).equals("1")){
                                             chargingFee = calculateChargingFee(seconds);
                                             total = calculateParkingFee(seconds, chargingFee);
@@ -150,15 +159,17 @@ public class InteractiveDisplay extends Application {
                                         }
                                     chargingFeeLabel.setText(chargingFeeLabel.getText()+"    "+chargingFee);
                                 }
-
-
                             }
                         } catch (SQLException ex) {
                             throw new RuntimeException(ex);
                         }
-
+                        try {
+                            dbcon.executeCommand("UPDATE Ticket SET ExitTime ='" + exitTime + "' WHERE CarNumber = '" + carNumber + "';");
+                            dbcon.executeCommand("UPDATE Spot SET isOccupied = '0' WHERE CarNumber = '" + carNumber + "';");
+                        } catch (SQLException ex) {
+                            System.err.println("Error executing insert: " + ex.getMessage());
+                        }
                     }
-
                 });
 
         // Set the scene and display the form
