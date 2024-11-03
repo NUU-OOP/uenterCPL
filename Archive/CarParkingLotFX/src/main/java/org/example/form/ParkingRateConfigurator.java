@@ -7,8 +7,18 @@ import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import org.example.dbconnnection.DBConnection;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 
 public class ParkingRateConfigurator extends Application {
+
+    DBConnection dbcon=new DBConnection();
+    private Connection conn= dbcon.getConnection();
+    public ParkingRateConfigurator() throws SQLException {
+    }
 
     private TextField firstHourRateField;
     private TextField secondThirdHourRateField;
@@ -53,6 +63,23 @@ public class ParkingRateConfigurator extends Application {
         Scene scene = new Scene(grid, 400, 300);
         primaryStage.setScene(scene);
         primaryStage.show();
+    }
+
+    private void insertRate(String spotType,int spotNumber, int floorNumber) throws SQLException {
+        String sql="INSERT INTO Spot(SpotType, SpotNumber, FloorNumber, isOccupied) VALUES (?, ?, ?, ?)";
+        try{
+            PreparedStatement pstmt=conn.prepareStatement(sql);
+
+            pstmt.setString(1, spotType);
+            pstmt.setInt(2,spotNumber);
+            pstmt.setInt(3,floorNumber);
+            pstmt.setBoolean(4, false);
+            pstmt.execute();
+            System.out.println("SQL command executed successfully.");
+        } catch (SQLException e) {
+            System.err.println("Error executing SQL command: " + e.getMessage());
+            throw e;
+        }
     }
 
     private void saveRates() {
