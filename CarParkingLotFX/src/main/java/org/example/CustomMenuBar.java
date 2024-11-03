@@ -65,8 +65,15 @@ public class CustomMenuBar extends Pane {
         MenuItem secondFloor = new MenuItem("Second Floor");
         secondFloor.setOnAction(event -> {
             System.out.println("SECOND ");
-            SecondFloor secondFloor1 = new SecondFloor();
+            SecondFloor secondFloor1 = null;
+
+            try {
+                secondFloor1 = new SecondFloor();
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
             borderPane.setCenter(secondFloor1);
+            System.out.println("second floor chosen");
 
 
         });

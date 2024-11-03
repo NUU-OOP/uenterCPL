@@ -82,6 +82,10 @@ public class DisplayBoard extends GridPane {
         this.add(motorcycleFractionLabel, 2, 5);
     }
 
+    public DisplayBoard(int evFilled, int evTotal, int handicappedFilled, int handicappedTotal, int compactFilled, int compactTotal) {
+
+    }
+
     // Helper method to calculate the percentage as a value between 0.0 and 1.0
     private double calculatePercentage(int filled, int total) {
         if (total == 0) return 0.0;  // Avoid division by zero
