@@ -47,7 +47,7 @@ public class ChangeSpotType extends Application {
 
         Button searchButton = new Button("Search");
         searchButton.setOnAction(e->{
-            carTypeComboBox.setPromptText(readTable(searchSpot.getText()));
+            carTypeComboBox.setPromptText(readTable(searchField.getText()));
         });
         Button updateButton=new Button("Update");
         updateButton.setOnAction(e->{
@@ -82,7 +82,7 @@ public class ChangeSpotType extends Application {
         return null;
     }
     private void updateTableSpot(String id,String SpotType){
-        String query = "UPDATE Spot SET SpotType = ? WHERE id = ?";
+        String query = "UPDATE Spot SET SpotType = ? WHERE SpotID = ?";
         try(PreparedStatement pstmt=conn.prepareStatement(query)){
             pstmt.setString(1,SpotType);
             pstmt.setInt(2,Integer.parseInt(id));
