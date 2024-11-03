@@ -100,7 +100,19 @@ public class CustomMenuBar extends Pane {
                 throw new RuntimeException(ex);
             }
         });
-        changeSpotType.setOnAction(e -> System.out.println("Change Spot Type selected"));
+        changeSpotType.setOnAction(e -> {
+            ChangeSpotType changeSpotType1= null;
+            try {
+                changeSpotType1 = new ChangeSpotType();
+            } catch (SQLException ex) {
+                throw new RuntimeException(ex);
+            }
+            try {
+                changeSpotType1.start(new Stage());
+            } catch (Exception ex) {
+                throw new RuntimeException(ex);
+            }
+        });
 
         spotMenu.getItems().addAll(changeRate, addSpot, changeSpotType);
 
