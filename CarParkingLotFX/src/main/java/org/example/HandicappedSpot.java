@@ -22,7 +22,7 @@ public class HandicappedSpot extends Spots implements ImageContent {
 
     @Override
     public void createContent() {
-        setImage("/img.png");
+        setImage("img.png");
     }
 
     @Override

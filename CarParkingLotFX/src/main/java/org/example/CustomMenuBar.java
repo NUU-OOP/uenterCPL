@@ -27,12 +27,8 @@ public class CustomMenuBar extends Pane {
         // Add actions for Car Management items
         enterNewCar.setOnAction(
                 event -> {
-                    EntranceForm entranceForm = null;
-                    try {
-                        entranceForm = new EntranceForm();
-                    } catch (SQLException e) {
-                        throw new RuntimeException(e);
-                    }
+                    EntranceForms entranceForm = null;
+                    entranceForm = new EntranceForms();
                     try {
                         entranceForm.start(new Stage());
                     } catch (Exception e) {
