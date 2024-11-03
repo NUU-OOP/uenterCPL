@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -19,6 +20,17 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
+import org.example.DBConnection;
+import org.example.Spots;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 public class InteractiveDisplay extends Application {
 
@@ -108,11 +120,172 @@ public class InteractiveDisplay extends Application {
             detailsBox, 
             buttonBox
         );
+        cancelButton.setOnAction(event -> {
+
+            detailCarNumberLabel.setText("Car Number:");
+            enteringTimeLabel.setText("Entering time:");
+            chargingFeeLabel.setText("Charging fee:");
+            totalPaymentLabel.setText("Total payment:");
+            carNumberInput.setText("");
+
+        });
+        searchButton.setOnAction(e -> {
+                    DBConnection dbcon = null;
+                    try {
+                        dbcon = new DBConnection();
+                    } catch (SQLException ex) {
+                        throw new RuntimeException(ex);
+                    }
+                    double total=0.0;
+                    double chargingFee=0.0;
+                    String exitTime = "";
+
+                    String carNumber = carNumberInput.getText().trim();
+                    if (!carNumber.isEmpty()) {
+                        ResultSet rs = null;
+                        try {
+                            rs = dbcon.executeQuery("SELECT * FROM Ticket ORDER BY SpotID;");
+                            while (rs.next()) {
+                                if (rs.getString(3).equals(carNumber)) {
+                                    detailCarNumberLabel.setText(detailCarNumberLabel.getText()+"     "+rs.getString(3));  // Add Car Number label
+                                    enteringTimeLabel.setText(enteringTimeLabel.getText()+"   "+formatDateTime(rs.getString(5)));
+                                    exitTime = getCurrentTime();
+                                    long seconds = TimeDifference(rs.getString(5), exitTime);
+                                    if (rs.getString(7).equals("1")){
+                                            chargingFee = calculateChargingFee(seconds);
+                                            total = calculateParkingFee(seconds, chargingFee);
+                                            totalPaymentLabel.setText(totalPaymentLabel.getText()+"    "+total);
+                                    }
+                                    else    {
+                                        total = calculateParkingFee(seconds);
+                                        totalPaymentLabel.setText(totalPaymentLabel.getText()+"    "+total);
+                                        }
+                                    chargingFeeLabel.setText(chargingFeeLabel.getText()+"    "+chargingFee);
+                                }
+                            }
+                        } catch (SQLException ex) {
+                            throw new RuntimeException(ex);
+                        }
+                        try {
+                            dbcon.executeCommand("UPDATE Ticket SET ExitTime ='" + exitTime + "' WHERE CarNumber = '" + carNumber + "';");
+                            dbcon.executeCommand("UPDATE Spot SET isOccupied = '0' WHERE CarNumber = '" + carNumber + "';");
+                        } catch (SQLException ex) {
+                            System.err.println("Error executing insert: " + ex.getMessage());
+                        }
+                    }
+                    else showErrorDialog("Please, input car number");
+                });
 
         // Set the scene and display the form
         Scene scene = new Scene(mainLayout, 400, 400);
         primaryStage.setScene(scene);
         primaryStage.show();
+    }
+
+
+
+    public static String getCurrentTime() {
+        LocalDateTime now = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSS");
+        return now.format(formatter);
+    }
+
+    public static String formatDateTime(String dateTime) {
+            LocalDateTime localDateTime = LocalDateTime.parse(dateTime);
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            return localDateTime.format(formatter);
+        }
+
+    public static long TimeDifference(String enterTime, String exitTime) {
+            LocalDateTime enter = LocalDateTime.parse(enterTime);
+            LocalDateTime exit = LocalDateTime.parse(exitTime);
+
+            Duration duration = Duration.between(enter, exit);
+            long seconds = duration.getSeconds();
+
+            return seconds;
+        }
+
+    public static double calculateChargingFee(long totalseconds) {
+        double chargingFee = 0.0;
+        chargingFee = totalseconds*1;
+        return chargingFee;
+
+    }
+
+    public static double calculateParkingFee(long totalseconds) {
+
+            double totalFee = 0.0;
+            long remainingSeconds = totalseconds;
+
+            // First 10 seconds rate
+            if (remainingSeconds > 0) {
+                long first10Seconds = Math.min(remainingSeconds, 10);
+                totalFee += first10Seconds * 10.0; // Rate for first 10 seconds is $10 per second
+                remainingSeconds -= first10Seconds;
+            }
+
+            // Second 10 seconds rate
+            if (remainingSeconds > 0) {
+                long second10Seconds = Math.min(remainingSeconds, 10);
+                totalFee += second10Seconds * 5.0; // Rate for second 10 seconds is $5 per second
+                remainingSeconds -= second10Seconds;
+            }
+
+            // Third 10 seconds rate
+            if (remainingSeconds > 0) {
+                long third10Seconds = Math.min(remainingSeconds, 10);
+                totalFee += third10Seconds * 3.0; // Rate for third 10 seconds is $3 per second
+                remainingSeconds -= third10Seconds;
+            }
+
+            // Remaining seconds rate
+            if (remainingSeconds > 0) {
+                totalFee += remainingSeconds * 2.0; // Rate for remaining seconds is $2 per second
+            }
+
+            return totalFee;
+        }
+
+    public static double calculateParkingFee(long totalseconds, double extraFee) {
+
+        double totalFee = 0.0;
+        long remainingSeconds = totalseconds;
+
+        // First 10 seconds rate
+        if (remainingSeconds > 0) {
+            long first10Seconds = Math.min(remainingSeconds, 10);
+            totalFee += first10Seconds * 10.0; // Rate for first 10 seconds is $10 per second
+            remainingSeconds -= first10Seconds;
+        }
+
+        // Second 10 seconds rate
+        if (remainingSeconds > 0) {
+            long second10Seconds = Math.min(remainingSeconds, 10);
+            totalFee += second10Seconds * 5.0; // Rate for second 10 seconds is $5 per second
+            remainingSeconds -= second10Seconds;
+        }
+
+        // Third 10 seconds rate
+        if (remainingSeconds > 0) {
+            long third10Seconds = Math.min(remainingSeconds, 10);
+            totalFee += third10Seconds * 3.0; // Rate for third 10 seconds is $3 per second
+            remainingSeconds -= third10Seconds;
+        }
+
+        // Remaining seconds rate
+        if (remainingSeconds > 0) {
+            totalFee += remainingSeconds * 2.0; // Rate for remaining seconds is $2 per second
+        }
+
+        return totalFee+extraFee;
+    }
+    private void showErrorDialog(String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Error");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 
     public static void main(String[] args) {
