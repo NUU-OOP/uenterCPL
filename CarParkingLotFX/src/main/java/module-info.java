@@ -5,5 +5,4 @@ module CarParkingLotFX {
     requires org.xerial.sqlitejdbc;
     opens org.example;
 
-
 }
