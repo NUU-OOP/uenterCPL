@@ -7,7 +7,7 @@ import javafx.stage.Stage;
 
 import java.sql.SQLException;
 
-public class ParkingSpotApp extends Application {
+public class ParkingSpotApp extends Application implements Runnable{
     private BorderPane borderPane;
 
     @Override
@@ -28,7 +28,13 @@ public class ParkingSpotApp extends Application {
     }
 
     public static void main(String[] args) {
+
         launch(args); // Launch the application
     }
 
+    @Override
+    public void run() {
+
+
+    }
 }

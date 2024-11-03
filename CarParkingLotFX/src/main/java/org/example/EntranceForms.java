@@ -13,11 +13,9 @@ import java.sql.SQLException;
 import java.time.LocalDateTime;
 
 public class EntranceForms extends Application {
-
     public void EntranceForms(Stage stage) {
 
     }
-
     @Override
     public void start(Stage primaryStage) throws Exception {
         // Create a GridPane for layout
@@ -26,7 +24,6 @@ public class EntranceForms extends Application {
         gridPane.setHgap(10);  // Horizontal gap between columns
         gridPane.setVgap(15);  // Vertical gap between rows
         gridPane.setPadding(new Insets(20));  // Padding around the grid
-
         // Row 0: Car Number Label and TextField
         Label carNumberLabel = new Label("CAR NUMBER:");
         TextField carNumberField = new TextField();
@@ -38,16 +35,12 @@ public class EntranceForms extends Application {
                 carNumberField.setText(newValue.toUpperCase());  // Convert to uppercase
             }
         });
-
-
         // Row 1: Car Type Label and ComboBox
         Label carTypeLabel = new Label("CAR TYPE:");
         ComboBox<SpotType> carTypeComboBox = new ComboBox<>();
         carTypeComboBox.getItems().addAll(
                 SpotType.values()
         );
-
-
         carTypeComboBox.setPromptText("Select car type");
 
         // Row 2: Extra Service Label and CheckBox
@@ -62,14 +55,11 @@ public class EntranceForms extends Application {
                 extraServiceCheckBox.setSelected(false);  // Reset to unchecked
             }
         });
-
-
         // Row 3: PARK and CANCEL Buttons
         Button parkButton = new Button("PARK");
         Button cancelButton = new Button("CANCEL");
         HBox buttonBox = new HBox(10, parkButton, cancelButton); // 10px spacing between buttons
         buttonBox.setAlignment(Pos.CENTER);
-
         // Add components to the GridPane
         gridPane.add(carNumberLabel, 0, 0);
         gridPane.add(carNumberField, 1, 0);
@@ -101,8 +91,6 @@ public class EntranceForms extends Application {
                 }
             }
         });
-
-
         // Add the GridPane to this Pane
 //        this.getChildren().add(gridPane);
         Scene scene = new Scene(gridPane, 400,300);

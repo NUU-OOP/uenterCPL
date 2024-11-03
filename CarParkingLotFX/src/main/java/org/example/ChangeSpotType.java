@@ -34,7 +34,7 @@ public class ChangeSpotType extends Application {
         Label foundLabel = new Label("Found:");
         ComboBox<SpotType> carTypeComboBox = new ComboBox<>();
         carTypeComboBox.getItems().setAll(SpotType.values());
-       /// carTypeComboBox.setPromptText("Select car type");
+        carTypeComboBox.setPromptText("Select car type");
         GridPane dialogLayout = new GridPane();
         dialogLayout.setVgap(15);
         dialogLayout.setHgap(10);
@@ -47,13 +47,17 @@ public class ChangeSpotType extends Application {
 
         Button searchButton = new Button("Search");
         searchButton.setOnAction(e->{
-            //carTypeComboBox.setItems(SpotType.values());
-            //Hikmatillo Uchun
+            carTypeComboBox.setPromptText(readTable(searchField.getText()));
+        });
+        Button updateButton=new Button("Update");
+        updateButton.setOnAction(e->{
+            updateTableSpot(searchField.getText(),carTypeComboBox.getValue().toString());
         });
         Button cancelButton = new Button("Cancel");
         cancelButton.setOnAction(e->stage.close());
         dialogLayout.add(searchButton, 2, 1);
         dialogLayout.add(cancelButton, 3, 1);
+        dialogLayout.add(updateButton,3,0);
         Scene dialogScene = new Scene(dialogLayout, 450, 100);
         stage.setScene(dialogScene);
         stage.show();
@@ -66,9 +70,9 @@ public class ChangeSpotType extends Application {
 
             // O'qilgan ma'lumotlarni ko'rsatish
             while (resultSet.next()) {
-                int id1 = resultSet.getInt(1);
+                //int id1 = resultSet.getInt(1);
                 String spotType = resultSet.getString(2);
-                System.out.println("ID: " + id1);
+                //System.out.println("ID: " + id1);
                 System.out.println("spotType: " + spotType);
                 return spotType;
             }
@@ -76,5 +80,15 @@ public class ChangeSpotType extends Application {
             throw new RuntimeException(e);
         }
         return null;
+    }
+    private void updateTableSpot(String id,String SpotType){
+        String query = "UPDATE Spot SET SpotType = ? WHERE SpotID = ?";
+        try(PreparedStatement pstmt=conn.prepareStatement(query)){
+            pstmt.setString(1,SpotType);
+            pstmt.setInt(2,Integer.parseInt(id));
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
