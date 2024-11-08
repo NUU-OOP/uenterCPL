@@ -95,6 +95,9 @@ public class PaymentInterface extends GridPane {
             primaryStage.setScene(previousScene); // Set to the previous scene
             primaryStage.show();
         });
+        payButton.setOnAction((event -> {
+
+        }));
 
     }
 }

@@ -34,6 +34,8 @@ import java.util.List;
 
 public class InteractiveDisplay extends Application {
     double total=0.0;
+    int spotID;
+
 
     @Override
     public void start(Stage primaryStage) {
@@ -155,11 +157,12 @@ public class InteractiveDisplay extends Application {
                             rs = dbcon.executeQuery("SELECT * FROM Ticket ORDER BY SpotID;");
                             while (rs.next()) {
                                 if (rs.getString(3).equals(carNumber)) {
+                                    spotID = rs.getInt(2);
                                     detailCarNumberLabel.setText(detailCarNumberLabel.getText()+"     "+rs.getString(3));  // Add Car Number label
                                     enteringTimeLabel.setText(enteringTimeLabel.getText()+"   "+formatDateTime(rs.getString(5)));
                                     exitTime = getCurrentTime();
                                     long seconds = TimeDifference(rs.getString(5), exitTime);
-                                    if (rs.getString(7).equals("1")){
+                                    if (rs.getString(7).equals("true")){
                                             chargingFee = calculateChargingFee(seconds);
                                             total = calculateParkingFee(seconds, chargingFee);
                                             totalPaymentLabel.setText(totalPaymentLabel.getText()+"    "+total);
@@ -177,7 +180,7 @@ public class InteractiveDisplay extends Application {
                         }
                         try {
                             dbcon.executeCommand("UPDATE Ticket SET ExitTime ='" + exitTime + "' WHERE CarNumber = '" + carNumber + "';");
-                            dbcon.executeCommand("UPDATE Spot SET isOccupied = '0' WHERE CarNumber = '" + carNumber + "';");
+                            dbcon.executeCommand("UPDATE Spot SET isOccupied = '0' AND carNumber = 'null'  WHERE SpotID = '" + spotID + "' ;");
                         } catch (SQLException ex) {
                             System.err.println("Error executing insert: " + ex.getMessage());
                         }
