@@ -1,5 +1,6 @@
 package org.example;
 
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -8,14 +9,16 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.stage.Stage;
 
 public class PaymentInterface extends GridPane {
 
     // UI components
     private Label dynamicLabel;  // Label that changes text dynamically
     private TextField inputField;  // Input field for card, amount, or account number
+    private TextField amountField;
 
-    public PaymentInterface() {
+    public PaymentInterface(double total, Stage primaryStage, Scene previousScene) {
         // Configure the GridPane layout
         this.setAlignment(Pos.CENTER);
         this.setHgap(10);  // Horizontal gap between columns
@@ -36,8 +39,9 @@ public class PaymentInterface extends GridPane {
         // Create HBox for Amount label and TextField
         HBox amountBox = new HBox(10); // 10px spacing between elements
         Label amountLabel = new Label("Amount:");
-        TextField amountField = new TextField();
+        amountField = new TextField();
         amountField.setEditable(false);
+        amountField.setText(String.valueOf(total));
         amountBox.getChildren().addAll(amountLabel, amountField);
 
 
@@ -45,8 +49,13 @@ public class PaymentInterface extends GridPane {
         HBox buttonBox = new HBox(10);  // 10px spacing between buttons
         buttonBox.setAlignment(Pos.CENTER);
         Button payButton = new Button("PAY");
+        payButton.setDisable(true);
+        inputField.textProperty().addListener((observable, oldValue, newValue) -> {
+            payButton.setDisable(newValue.trim().isEmpty());
+        });
         Button cancelButton = new Button("CANCEL");
         buttonBox.getChildren().addAll(payButton, cancelButton);
+
 
         // Add components to the GridPane
         this.add(paymentMethodLabel, 0, 0);  // Column 0, Row 0
@@ -78,5 +87,14 @@ public class PaymentInterface extends GridPane {
                     break;
             }
         });
+        cancelButton.setOnAction((event) -> {
+            paymentMethodComboBox.getSelectionModel().clearSelection();
+            dynamicLabel.setText("Select Payment Method");
+            inputField.clear();
+            // Go back to the InteractiveDisplay scene
+            primaryStage.setScene(previousScene); // Set to the previous scene
+            primaryStage.show();
+        });
+
     }
 }

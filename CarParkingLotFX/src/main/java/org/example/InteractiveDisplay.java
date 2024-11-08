@@ -33,6 +33,7 @@ import java.util.Date;
 import java.util.List;
 
 public class InteractiveDisplay extends Application {
+    double total=0.0;
 
     @Override
     public void start(Stage primaryStage) {
@@ -105,6 +106,7 @@ public class InteractiveDisplay extends Application {
         // Create Cancel and Pay buttons with equal size
         Button cancelButton = new Button("Cancel");
         Button payButton = new Button("Pay");
+        payButton.setDisable(true);
 
         // Set both buttons to have the same width
         cancelButton.setMinWidth(100);
@@ -127,16 +129,22 @@ public class InteractiveDisplay extends Application {
             chargingFeeLabel.setText("Charging fee:");
             totalPaymentLabel.setText("Total payment:");
             carNumberInput.setText("");
+            primaryStage.close();
 
         });
         searchButton.setOnAction(e -> {
+            detailCarNumberLabel.setText("Car Number:");
+            enteringTimeLabel.setText("Entering time:");
+            chargingFeeLabel.setText("Charging fee:");
+            totalPaymentLabel.setText("Total payment:");
+
                     DBConnection dbcon = null;
                     try {
                         dbcon = new DBConnection();
                     } catch (SQLException ex) {
                         throw new RuntimeException(ex);
                     }
-                    double total=0.0;
+
                     double chargingFee=0.0;
                     String exitTime = "";
 
@@ -161,6 +169,7 @@ public class InteractiveDisplay extends Application {
                                         totalPaymentLabel.setText(totalPaymentLabel.getText()+"    "+total);
                                         }
                                     chargingFeeLabel.setText(chargingFeeLabel.getText()+"    "+chargingFee);
+                                    payButton.setDisable(false);
                                 }
                             }
                         } catch (SQLException ex) {
@@ -175,6 +184,19 @@ public class InteractiveDisplay extends Application {
                     }
                     else showErrorDialog("Please, input car number");
                 });
+
+        payButton.setOnAction(e -> {
+            Scene previousScene = primaryStage.getScene(); // Store the current scene
+            PaymentInterface ShowPaymentInterface = new PaymentInterface(total, primaryStage, previousScene);
+            try {
+                Scene scene = new Scene(ShowPaymentInterface);
+                primaryStage.setScene(scene);
+                primaryStage.show();
+
+            } catch (Exception ex) {
+                throw new RuntimeException(ex);
+            }
+        });
 
         // Set the scene and display the form
         Scene scene = new Scene(mainLayout, 400, 400);
