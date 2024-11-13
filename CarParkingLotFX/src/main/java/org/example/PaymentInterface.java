@@ -11,14 +11,18 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.stage.Stage;
 
+import java.sql.Connection;
+import java.sql.Date;
+import java.sql.SQLException;
+
 public class PaymentInterface extends GridPane {
 
     // UI components
     private Label dynamicLabel;  // Label that changes text dynamically
     private TextField inputField;  // Input field for card, amount, or account number
     private TextField amountField;
-
-    public PaymentInterface(double total, Stage primaryStage, Scene previousScene) {
+    private String AccountID="null";
+    public PaymentInterface(double total, Stage primaryStage, Scene previousScene, int spotID, int TicketID, String exitTime, DBConnection dbcon) {
         // Configure the GridPane layout
         this.setAlignment(Pos.CENTER);
         this.setHgap(10);  // Horizontal gap between columns
@@ -80,6 +84,7 @@ public class PaymentInterface extends GridPane {
                 case "ACCOUNT":
                     dynamicLabel.setText("Account Number:");
                     inputField.setPromptText("Enter account number");
+                    AccountID=inputField.getText();
                     break;
                 default:
                     dynamicLabel.setText("Select Payment Method");
@@ -95,9 +100,18 @@ public class PaymentInterface extends GridPane {
             primaryStage.setScene(previousScene); // Set to the previous scene
             primaryStage.show();
         });
-        payButton.setOnAction((event -> {
-
-        }));
+        payButton.setOnAction((event) -> {
+            if (dbcon == null) {
+                System.err.println("Database connection is null!");
+                return;
+            }
+            try {
+                dbcon.executeCommand("INSERT INTO Payment (TicketId, PaymentMetod, Amount, AccoutID, ExitDate)" +
+                        "VALUES ('"+TicketID+"', '"+paymentMethodComboBox.getValue()+"', '"+amountField+"', '"+AccountID+"', '"+exitTime+"');");
+            } catch (SQLException ex) {
+                System.err.println("Error executing insert: " + ex.getMessage());
+            }
+        });
 
     }
 }

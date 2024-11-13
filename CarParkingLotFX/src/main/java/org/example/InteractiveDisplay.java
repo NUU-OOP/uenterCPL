@@ -23,6 +23,7 @@ import javafx.stage.Stage;
 import org.example.DBConnection;
 import org.example.Spots;
 
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.Duration;
@@ -35,7 +36,10 @@ import java.util.List;
 public class InteractiveDisplay extends Application {
     double total=0.0;
     int spotID;
-
+    int TicketID;
+    private DBConnection dbcon;
+    double chargingFee=0.0;
+    String exitTime = "";
 
     @Override
     public void start(Stage primaryStage) {
@@ -140,15 +144,13 @@ public class InteractiveDisplay extends Application {
             chargingFeeLabel.setText("Charging fee:");
             totalPaymentLabel.setText("Total payment:");
 
-                    DBConnection dbcon = null;
+                    dbcon = null;
                     try {
                         dbcon = new DBConnection();
                     } catch (SQLException ex) {
                         throw new RuntimeException(ex);
                     }
 
-                    double chargingFee=0.0;
-                    String exitTime = "";
 
                     String carNumber = carNumberInput.getText().trim();
                     if (!carNumber.isEmpty()) {
@@ -157,6 +159,7 @@ public class InteractiveDisplay extends Application {
                             rs = dbcon.executeQuery("SELECT * FROM Ticket ORDER BY SpotID;");
                             while (rs.next()) {
                                 if (rs.getString(3).equals(carNumber)) {
+                                    TicketID = rs.getInt(1);
                                     spotID = rs.getInt(2);
                                     detailCarNumberLabel.setText(detailCarNumberLabel.getText()+"     "+rs.getString(3));  // Add Car Number label
                                     enteringTimeLabel.setText(enteringTimeLabel.getText()+"   "+formatDateTime(rs.getString(5)));
@@ -190,7 +193,7 @@ public class InteractiveDisplay extends Application {
 
         payButton.setOnAction(e -> {
             Scene previousScene = primaryStage.getScene(); // Store the current scene
-            PaymentInterface ShowPaymentInterface = new PaymentInterface(total, primaryStage, previousScene);
+            PaymentInterface ShowPaymentInterface = new PaymentInterface(total, primaryStage, previousScene, spotID, TicketID, exitTime, dbcon);
             try {
                 Scene scene = new Scene(ShowPaymentInterface);
                 primaryStage.setScene(scene);
